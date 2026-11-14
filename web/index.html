@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SaddSAR: radar-based monitoring of Morocco's lakes and reservoirs with NISAR and Sentinel-1." />
+    <title>SaddSAR – Reservoir Monitor</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">◉</span>
+        <div>
+          <h1>SaddSAR</h1>
+          <p class="tagline">Radar monitoring of Morocco's reservoirs</p>
+        </div>
+        <span id="mock-badge" class="mock-badge" hidden title="This dataset is illustrative mock data">Mock data</span>
+      </div>
+      <div id="search" class="search"></div>
+      <nav class="top-actions">
+        <button id="btn-compare" class="btn" type="button" aria-pressed="false">↔ Compare</button>
+        <button id="btn-explainer" class="btn" type="button">How radar sees water</button>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section id="map-wrap" class="map-wrap" aria-label="Map">
+        <div id="map" class="map"></div>
+        <div id="compare-labels" class="compare-labels" hidden>
+          <span id="compare-label-left" class="compare-label left"></span>
+          <span id="compare-label-right" class="compare-label right"></span>
+        </div>
+        <div id="layer-control" class="floating layer-control"></div>
+        <div id="legend" class="floating legend"></div>
+        <div id="timebar" class="floating timebar"></div>
+        <div id="loading" class="overlay-msg">Loading reservoir data…</div>
+      </section>
+      <aside id="panel" class="panel" aria-label="Details"></aside>
+    </main>
+
+    <div id="explainer" class="modal" hidden></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

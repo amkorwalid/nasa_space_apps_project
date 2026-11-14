@@ -1,0 +1,83 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "mock": true,
+    "generated_by": "web/scripts/generate-mock-data.mjs",
+    "note": "Illustrative mock data for UI development. Not real measurements."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "basin_id": "SEBOU",
+        "name": "Sebou",
+        "n_reservoirs": 1,
+        "capacity_mcm": 3522,
+        "month": "2026-10",
+        "area_km2": 84.19,
+        "normal_km2": 61.08,
+        "pct_of_normal": 137.8,
+        "status": "above_normal"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -6.65,
+              34.25
+            ],
+            [
+              -6.3,
+              34.85
+            ],
+            [
+              -5.8,
+              34.97
+            ],
+            [
+              -5.2,
+              34.98
+            ],
+            [
+              -4.6,
+              34.88
+            ],
+            [
+              -4.2,
+              34.56
+            ],
+            [
+              -3.95,
+              34
+            ],
+            [
+              -4.1,
+              33.45
+            ],
+            [
+              -4.6,
+              33.18
+            ],
+            [
+              -5.2,
+              33.25
+            ],
+            [
+              -5.7,
+              33.55
+            ],
+            [
+              -6.1,
+              33.85
+            ],
+            [
+              -6.65,
+              34.25
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
