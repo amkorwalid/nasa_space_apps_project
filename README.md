@@ -1,9 +1,8 @@
-# nasa_space_apps_project
 # 🌊 SaddSAR
 
 **Radar-based monitoring of lakes and reservoirs: Morocco prototype → global water monitoring**
 
-> *AquaPulse uses NISAR radar to monitor Morocco's lakes and reservoirs every month, tracking how much water they hold and flagging drought early, whatever the weather.*
+> *SaddSAR uses NISAR radar to monitor Morocco's lakes and reservoirs every month, tracking how much water they hold and flagging drought early, whatever the weather.*
 
 Built for the **2026 NASA Space Apps Challenge**, challenge: [**Dancing with the SARs**](https://www.spaceappschallenge.org/2026/challenges/dancing-with-the-sars/).
 
@@ -35,7 +34,7 @@ Built for the **2026 NASA Space Apps Challenge**, challenge: [**Dancing with the
 
 ## 🔭 Overview
 
-AquaPulse is an **open-source, interactive web GIS** that monitors the surface water stored in lakes, dams and reservoirs. For each water body it:
+SaddSAR is an **open-source, interactive web GIS** that monitors the surface water stored in lakes, dams and reservoirs. For each water body it:
 
 1. **Identifies** it using public reservoir and lake polygon datasets.
 2. **Analyzes** a time series of radar images (NISAR L-band + Sentinel-1 C-band) to map its water extent each month.
@@ -55,7 +54,7 @@ The **hackathon prototype covers Morocco's national reservoirs**. The architectu
 
 ## 💡 Our solution
 
-AquaPulse turns complex radar observations into **simple, actionable water information**:
+SaddSAR turns complex radar observations into **simple, actionable water information**:
 
 - **How much surface water does each reservoir hold this month?**
 - **Is that above, near, or below normal for this time of year?**
@@ -224,11 +223,10 @@ Drought is one output of the monitoring system: an alert raised when a reservoir
 ## 📁 Repository structure
 
 ```
-aquapulse/
+nasa_space_apps_project/
 ├── README.md
 ├── LICENSE
-├── environment.yml              # Conda environment
-├── requirements.txt
+├── requirements.txt             # Python dependencies (pip)
 ├── .env.example                 # EARTHDATA_USER, EARTHDATA_PASS, GEE_PROJECT
 ├── contracts/                   # Shared file schemas + examples (agreed at kickoff)
 ├── config/
@@ -280,12 +278,14 @@ aquapulse/
 
 ```bash
 # 1. Clone
-git clone https://github.com/<your-org>/aquapulse.git
-cd aquapulse
+git clone https://github.com/amkorwalid/nasa_space_apps_project.git
+cd nasa_space_apps_project
 
 # 2. Environment
-conda env create -f environment.yml
-conda activate aquapulse
+python -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
 
 # 3. Credentials
 cp .env.example .env          # add your Earthdata login + GEE project
@@ -434,7 +434,7 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 
 ### 🟣 Kickoff, all together (H0–H2)
 - [ ] **P0** Create repo, branches per track, project board with one column per track.
-- [ ] **P0** Everyone creates NASA Earthdata + Google Earth Engine accounts; install environment.
+- [ ] **P0** Everyone creates NASA Earthdata + Google Earth Engine accounts; create a Python virtual environment and `pip install -r requirements.txt`.
 - [ ] **P0** Agree on and commit **Contracts 1–5** to `contracts/`, each with an example file.
 - [ ] **P0** Agree on the **5 demo reservoirs** now so nobody waits for the catalog. Suggested: Al Wahda, Al Massira, Bin El Ouidane, Idriss I, Mansour Eddahbi (north, centre, mountain, arid south).
 - [ ] **P0** Hand-draw rough bounding boxes for those 5 (geojson.io) → `contracts/demo_bboxes.geojson`. Tracks B and C start from this immediately.
@@ -663,4 +663,4 @@ Code: **MIT License**. Derived data products follow the licenses of their source
 
 ---
 
-
+<p align="center"><i>SaddSAR: listening to the rhythm of Earth's water, one radar pulse at a time.</i> 🛰️💧</p>

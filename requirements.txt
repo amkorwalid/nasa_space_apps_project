@@ -1,0 +1,17 @@
+asf_search
+earthaccess
+earthengine-api
+geemap
+h5py
+numpy
+scipy
+scikit-image
+xarray
+rioxarray
+rasterio
+geopandas
+shapely
+pandas
+matplotlib
+python-dotenv
+jupyter
