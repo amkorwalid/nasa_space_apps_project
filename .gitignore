@@ -1,2 +1,27 @@
+# Python
 .venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Secrets
 .env
+
+# Large / regenerable data (README: raw + interim are git-ignored)
+data/raw/
+data/interim/
+data/logs/
+data/reference/hydrobasins/
+data/reference/rasters/
+data/reference/chirps_monthly.nc
+data/reference/*.part
+data/processed/quicklooks/
+
+# Kept in git on purpose (needed for stable IDs, baseline and monthly CI updates):
+#   data/reference/id_map.csv, data/reference/jrc_outlines.geojson,
+#   data/processed/*.csv|*.json|*.geojson, data/processed/extents_*/
+
+# Web build
+web/dist/
+web/node_modules/

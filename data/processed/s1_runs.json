@@ -1,0 +1,97 @@
+{
+ "MAR_0001": {
+  "orbit": 45,
+  "n_items": 1611,
+  "grid": {
+   "epsg": 32629,
+   "transform": [
+    40.0,
+    0.0,
+    625640.0,
+    0.0,
+    -40.0,
+    3599560.0
+   ],
+   "width": 867,
+   "height": 425
+  },
+  "search_zone_km2": 198.93,
+  "hand_filter": true
+ },
+ "MAR_0002": {
+  "orbit": 74,
+  "n_items": 2277,
+  "grid": {
+   "epsg": 32630,
+   "transform": [
+    40.0,
+    0.0,
+    296400.0,
+    0.0,
+    -40.0,
+    3845880.0
+   ],
+   "width": 829,
+   "height": 709
+  },
+  "search_zone_km2": 203.58,
+  "hand_filter": true
+ },
+ "MAR_0003": {
+  "orbit": 74,
+  "n_items": 1079,
+  "grid": {
+   "epsg": 32630,
+   "transform": [
+    40.0,
+    0.0,
+    336160.0,
+    0.0,
+    -40.0,
+    3783920.0
+   ],
+   "width": 656,
+   "height": 311
+  },
+  "search_zone_km2": 100.61,
+  "hand_filter": true
+ },
+ "MAR_0004": {
+  "orbit": 154,
+  "n_items": 1663,
+  "grid": {
+   "epsg": 32629,
+   "transform": [
+    40.0,
+    0.0,
+    700240.0,
+    0.0,
+    -40.0,
+    3431040.0
+   ],
+   "width": 603,
+   "height": 378
+  },
+  "search_zone_km2": 92.46,
+  "hand_filter": true
+ },
+ "MAR_0008": {
+  "orbit": 154,
+  "n_items": 1502,
+  "grid": {
+   "epsg": 32629,
+   "transform": [
+    40.0,
+    0.0,
+    737440.0,
+    0.0,
+    -40.0,
+    3561320.0
+   ],
+   "width": 527,
+   "height": 368
+  },
+  "search_zone_km2": 73.88,
+  "hand_filter": true
+ }
+}

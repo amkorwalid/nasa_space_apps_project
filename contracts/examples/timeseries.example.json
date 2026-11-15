@@ -1,0 +1,7 @@
+{
+  "reservoir_id": "MAR_0001",
+  "series": [
+    {"month": "2026-07", "area_km2": 48.2, "normal_km2": 52.0, "p10_km2": 30.1, "p90_km2": 70.3,
+     "status": "normal", "sensor": "NISAR", "official_fill_pct": 41.6}
+  ]
+}

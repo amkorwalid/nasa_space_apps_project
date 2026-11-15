@@ -1,4 +1,4 @@
-// Loads the Contract 4 web dataset from public/data/ (mock now, Track A export later).
+// Loads the Contract 4 web dataset from public/data/ (written by pipeline/08_export_web.py).
 const BASE = `${import.meta.env.BASE_URL}data/`;
 
 async function getJSON(path, { optional = false } = {}) {
@@ -11,14 +11,19 @@ async function getJSON(path, { optional = false } = {}) {
 }
 
 export async function loadData() {
-  const [reservoirs, basins, months, extents] = await Promise.all([
+  const [reservoirs, basins, months, extents, national, alerts, rainfall] = await Promise.all([
     getJSON('reservoirs.geojson'),
     getJSON('basins.geojson', { optional: true }),
     getJSON('months.json'),
     getJSON('extents/index.json', { optional: true }),
+    getJSON('national.json', { optional: true }).catch(() => null),
+    getJSON('alerts.json', { optional: true }).catch(() => null),
+    getJSON('rainfall.json', { optional: true }).catch(() => null),
   ]);
 
-  const ids = reservoirs.features.map((f) => f.properties.reservoir_id);
+  // Mock data has no `monitored` flag: treat every feature as monitored.
+  const isMonitored = (f) => f.properties.monitored !== false;
+  const ids = reservoirs.features.filter(isMonitored).map((f) => f.properties.reservoir_id);
   const series = {};
   await Promise.all(
     ids.map(async (id) => {
@@ -36,6 +41,12 @@ export async function loadData() {
     extents: extents || {},
     series,
     byId,
+    national: national || [],
+    alerts: alerts || [],
+    rainfall: rainfall || {},
+    meta: reservoirs.metadata || {},
+    isMonitored,
+    downloadUrl: (name) => `${BASE}downloads/${name}`,
     isMock: Boolean(reservoirs.metadata?.mock),
     /** Time-series record for a reservoir and month (or undefined). */
     record: (id, month) => series[id]?.get(month),

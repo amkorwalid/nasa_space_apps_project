@@ -1,0 +1,19 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "reservoir_id": "MAR_0001",
+        "name": "Al Massira",
+        "basin": "Oum Er-Rbia",
+        "capacity_mcm": 2760,
+        "dam_year": 1979,
+        "polygon_area_km2": 135.1,
+        "priority": true,
+        "confidence": "high"
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[[-7.66, 32.42], [-7.40, 32.42], [-7.40, 32.55], [-7.66, 32.55], [-7.66, 32.42]]]}
+    }
+  ]
+}

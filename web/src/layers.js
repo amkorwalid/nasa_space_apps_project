@@ -1,9 +1,10 @@
 import { BASEMAPS } from './map.js';
+import { t } from './i18n.js';
 
 const LAYERS = [
-  ['reservoirs', 'Reservoirs & lakes'],
-  ['extents', 'Water extent (radar)'],
-  ['basins', 'River basins'],
+  ['reservoirs', 'lyrReservoirs'],
+  ['extents', 'lyrExtents'],
+  ['basins', 'lyrBasins'],
 ];
 
 /** Layer control: overlay toggles + basemap switcher. Writes into the store. */
@@ -11,16 +12,16 @@ export function initLayerControl(el, store) {
   const { layers, basemap } = store.get();
   el.innerHTML = `
     <details>
-      <summary aria-label="Layers">☰ Layers</summary>
+      <summary aria-label="${t('layers')}">☰ ${t('layers')}</summary>
       <fieldset>
-        <legend>Overlays</legend>
+        <legend>${t('overlays')}</legend>
         ${LAYERS.map(
           ([key, label]) =>
-            `<label><input type="checkbox" name="layer" value="${key}" ${layers[key] ? 'checked' : ''}> ${label}</label>`,
+            `<label><input type="checkbox" name="layer" value="${key}" ${layers[key] ? 'checked' : ''}> ${t(label)}</label>`,
         ).join('')}
       </fieldset>
       <fieldset>
-        <legend>Basemap</legend>
+        <legend>${t('basemap')}</legend>
         ${Object.entries(BASEMAPS)
           .map(
             ([key, b]) =>

@@ -1,17 +1,28 @@
+# Data access
 asf_search
 earthaccess
-earthengine-api
-geemap
-h5py
+pystac-client
+planetary-computer
+earthengine-api          # optional: pipeline/06_baseline_s1_gee.py
+geemap                   # optional: notebooks
+# Processing
 numpy
 scipy
 scikit-image
+h5py
 xarray
 rioxarray
 rasterio
-geopandas
+pyproj
 shapely
+geopandas
 pandas
-matplotlib
+pyyaml
 python-dotenv
+matplotlib
+pillow
+# Validation / notebooks / tests
 jupyter
+nbformat
+jsonschema
+pytest

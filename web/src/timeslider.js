@@ -1,4 +1,5 @@
 import { changed, formatMonth } from './store.js';
+import { t } from './i18n.js';
 
 const PLAY_MS = 900;
 
@@ -8,18 +9,18 @@ export function initTimeSlider(el, months, store) {
   el.innerHTML = `
     <div class="timebar-row">
       <div class="tb-buttons">
-        <button type="button" class="icon-btn" data-step="-1" aria-label="Previous month">‹</button>
-        <button type="button" class="icon-btn play" data-action="play" aria-label="Play">▶</button>
-        <button type="button" class="icon-btn" data-step="1" aria-label="Next month">›</button>
+        <button type="button" class="icon-btn" data-step="-1" aria-label="${t('prev')}">‹</button>
+        <button type="button" class="icon-btn play" data-action="play" aria-label="${t('play')}">▶</button>
+        <button type="button" class="icon-btn" data-step="1" aria-label="${t('next')}">›</button>
       </div>
       <div class="tb-slider">
-        <div class="tb-label"><span class="tb-side" hidden>Left</span> <strong id="tb-month"></strong></div>
-        <input type="range" min="0" max="${last}" step="1" aria-label="Month" />
+        <div class="tb-label"><span class="tb-side" hidden>${t('left')}</span> <strong id="tb-month"></strong></div>
+        <input type="range" min="0" max="${last}" step="1" aria-label="${t('month')}" />
         <div class="tb-ticks">${months
           .map((m, i) => (m.endsWith('-01') || i === 0 ? `<span style="left:${(i / last) * 100}%">${m.slice(0, 4)}</span>` : ''))
           .join('')}</div>
       </div>
-      <label class="tb-compare" hidden>Right
+      <label class="tb-compare" hidden>${t('right')}
         <select aria-label="Comparison month">${months
           .map((m) => `<option value="${m}">${formatMonth(m)}</option>`)
           .join('')}</select>
@@ -41,13 +42,13 @@ export function initTimeSlider(el, months, store) {
     clearInterval(timer);
     timer = null;
     playBtn.textContent = '▶';
-    playBtn.setAttribute('aria-label', 'Play');
+    playBtn.setAttribute('aria-label', t('play'));
   };
   const play = () => {
     if (idx() === last) go(0);
     timer = setInterval(() => go(idx() + 1 > last ? 0 : idx() + 1), PLAY_MS);
     playBtn.textContent = '❚❚';
-    playBtn.setAttribute('aria-label', 'Pause');
+    playBtn.setAttribute('aria-label', t('pause'));
   };
 
   range.addEventListener('input', () => {

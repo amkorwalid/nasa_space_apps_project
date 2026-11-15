@@ -127,7 +127,16 @@ Drought is one output of the monitoring system: an alert raised when a reservoir
 | **Al Maa Dialna** (Moroccan Ministry of Equipment and Water) | Official dam fill rates → ground truth | Public platform |
 | **Basin boundaries** (HydroBASINS / national river basin agencies) | Basin aggregation | HydroSHEDS |
 
-> **Accounts needed:** NASA Earthdata Login (free), Google Earth Engine (free for non-commercial use).
+> **Accounts needed:** NASA Earthdata Login (free) for NISAR. The default Sentinel-1 backend reads
+> Sentinel-1 RTC, JRC Global Surface Water, Copernicus DEM GLO-30 and Sentinel-2 L2A from
+> [Microsoft Planetary Computer](https://planetarycomputer.microsoft.com) without an account.
+> Google Earth Engine (free for non-commercial use) is only needed for the alternative
+> `06_baseline_s1_gee.py`.
+>
+> **What the prototype actually uses:** reservoir polygons from `geo_data/` (JRC max extent + OSM,
+> attributes from Wikidata / GeoDAR / OSM) instead of raw GDW/HydroLAKES; a height-above-reservoir
+> terrain filter from the Copernicus DEM instead of MERIT HAND (the GEE variant uses MERIT HAND);
+> CHIRPS monthly rainfall from the IRI Data Library. See `docs/methodology.md`.
 
 ---
 
@@ -212,7 +221,7 @@ Drought is one output of the monitoring system: an alert raised when a reservoir
 | Layer | Tools |
 |---|---|
 | Data access | `asf_search`, `earthaccess`, Google Earth Engine Python API (`earthengine-api`, `geemap`) |
-| Processing | Python 3.11+, `numpy`, `h5py`, `xarray`, `rioxarray`, `rasterio`, `geopandas`, `shapely`, `scikit-image`, `scipy` |
+| Processing | Python 3.12+, `numpy`, `h5py`, `xarray`, `rioxarray`, `rasterio`, `geopandas`, `shapely`, `scikit-image`, `scipy` |
 | Geodata formats | GeoJSON, GeoPackage, PMTiles, Cloud-Optimized GeoTIFF (COG) |
 | Frontend | HTML/CSS/JavaScript (or React + Vite), **MapLibre GL JS**, `maplibre-gl-compare` (swipe), **Chart.js** or Plotly, `pmtiles` |
 | Hosting / CI | GitHub, GitHub Pages or Netlify, GitHub Actions |
@@ -225,51 +234,56 @@ Drought is one output of the monitoring system: an alert raised when a reservoir
 ```
 nasa_space_apps_project/
 ├── README.md
-├── LICENSE
-├── requirements.txt             # Python dependencies (pip)
-├── .env.example                 # EARTHDATA_USER, EARTHDATA_PASS, GEE_PROJECT
-├── contracts/                   # Shared file schemas + examples (agreed at kickoff)
+├── LICENSE                        # MIT
+├── requirements.txt               # Python dependencies (pip)
+├── .env.example                   # EARTHDATA_USER, EARTHDATA_PASS, GEE_PROJECT
+├── run_pipeline.py                # one command for the whole chain (also: Makefile)
 ├── config/
-│   └── settings.yaml            # AOI, dates, thresholds, paths
+│   └── settings.yaml              # AOI, dates, thresholds, paths
+├── contracts/                     # Shared file schemas + one example per contract
+│   ├── *.schema.json              # Contracts 1 and 4 (validated by tests/)
+│   ├── examples/                  # reservoirs, monthly_area, status, timeseries, extents, official_fill
+│   ├── water_detection_spec.md    # Contract 5
+│   ├── gcov_notes.md              # verified NISAR GCOV paths / mask semantics
+│   └── demo_bboxes.geojson        # the 5 demo reservoirs
+├── geo_data/                      # source polygons (JRC max extent + OSM, with dam attributes)
 ├── data/
-│   ├── raw/                     # Downloaded scenes (git-ignored)
-│   ├── interim/                 # Clipped / preprocessed rasters (git-ignored)
-│   ├── reference/               # Polygons, JRC, HAND, basins, official fill rates
-│   └── processed/               # Monthly masks, areas, status tables
+│   ├── raw/  interim/             # downloads, windows, masks (git-ignored)
+│   ├── reference/                 # id_map.csv, jrc_outlines.geojson, HydroBASINS, DEM/JRC rasters, CHIRPS
+│   └── processed/                 # catalog, monthly areas, status, climatology, overlays, validation
 ├── pipeline/
-│   ├── 01_build_catalog.py      # Polygons → reservoir catalog
-│   ├── 02_search_download.py    # NISAR search & download
-│   ├── 03_preprocess.py         # dB, speckle filter, masks, clip
-│   ├── 04_detect_water.py       # Otsu + filters + cleanup
-│   ├── 05_monthly_composite.py  # Majority vote per month
-│   ├── 06_baseline_s1_gee.py    # Sentinel-1 baseline in Earth Engine
-│   ├── 07_status_anomaly.py     # % of normal, z-score, classes, trends
-│   ├── 08_export_web.py         # GeoJSON/PMTiles, COG/PNG, JSON time series
-│   └── utils/
-│       ├── io.py
-│       ├── sar.py
-│       └── geo.py
+│   ├── 01_build_catalog.py        # polygons -> catalog, IDs, zones, basins
+│   ├── 02_search_download.py      # NISAR GCOV inventory + windowed read
+│   ├── 03_preprocess.py           # dB, speckle filter, masks, reference layers
+│   ├── 04_detect_water.py         # Otsu + filters + cleanup (NISAR)
+│   ├── 05_monthly_composite.py    # majority vote per month (NISAR)
+│   ├── 06_baseline_s1_pc.py       # Sentinel-1 baseline, Planetary Computer (default, no login)
+│   ├── 06_baseline_s1_gee.py      # Sentinel-1 baseline, Google Earth Engine (alternative)
+│   ├── 07_status_anomaly.py       # % of normal, z-score, classes, trends, harmonization
+│   ├── 08_export_web.py           # Contract 4 web data, alerts, downloads, static API
+│   ├── 09_validate.py             # validation plan -> docs/validation_report.md
+│   ├── 10_rainfall.py             # CHIRPS rainfall anomaly per basin (stretch)
+│   └── utils/                     # io.py, geo.py, sar.py, nisar.py, stac.py, s1.py, analytics.py
 ├── notebooks/
 │   ├── 00_explore_gcov.ipynb
 │   ├── 01_water_detection_tests.ipynb
 │   └── 02_validation.ipynb
+├── tests/                         # pytest: algorithm, analytics, contracts
 ├── web/
 │   ├── index.html
-│   ├── src/
-│   │   ├── main.js
-│   │   ├── map.js
-│   │   ├── panel.js
-│   │   ├── charts.js
-│   │   └── timeslider.js
-│   ├── styles/
-│   ├── public/data/             # Exported outputs from pipeline/08
-│   └── content/                 # Explainer text & images (Track E)
+│   ├── src/                       # main, map, panel, charts, timeslider, compare, search, story, i18n, ...
+│   ├── content/                   # explainer + story text (EN / FR / AR)
+│   ├── public/data/               # exported outputs from pipeline/08 (do not edit by hand)
+│   └── scripts/generate-mock-data.mjs
 ├── docs/
 │   ├── methodology.md
 │   ├── validation_report.md
 │   └── images/
+├── prototypes/                    # first Track B/C scripts, superseded by pipeline/
 └── .github/workflows/
-    └── monthly_update.yml
+    ├── deploy_pages.yml           # build + publish the web app on GitHub Pages
+    ├── monthly_update.yml         # re-run the pipeline monthly, commit new data
+    └── tests.yml
 ```
 
 ---
@@ -281,28 +295,40 @@ nasa_space_apps_project/
 git clone https://github.com/amkorwalid/nasa_space_apps_project.git
 cd nasa_space_apps_project
 
-# 2. Environment
+# 2. Environment (Python 3.12+)
 python -m venv .venv
 source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
 # 3. Credentials
-cp .env.example .env          # add your Earthdata login + GEE project
-earthengine authenticate
+cp .env.example .env           # NASA Earthdata login (NISAR). Sentinel-1 needs no account.
+# optional, only for the Earth Engine variant: earthengine authenticate
 
-# 4. Run the pipeline (example: one reservoir, test mode)
+# 4. Run the pipeline (example: one reservoir)
 python pipeline/01_build_catalog.py --country MAR
 python pipeline/02_search_download.py --reservoir al_massira --start 2026-06-01 --end 2026-11-01
 python pipeline/03_preprocess.py --reservoir al_massira
 python pipeline/04_detect_water.py --reservoir al_massira
 python pipeline/05_monthly_composite.py --reservoir al_massira
+python pipeline/06_baseline_s1_pc.py --reservoir al_massira
 python pipeline/07_status_anomaly.py
 python pipeline/08_export_web.py
+python pipeline/09_validate.py
 
-# 5. Run the web app locally
-cd web && npx serve .          # or: python -m http.server 8000
+# ...or everything at once (priority reservoirs; --skip-nisar without an Earthdata login)
+python run_pipeline.py --reservoir priority
+
+# 5. Tests
+python -m pytest
+
+# 6. Run the web app locally (Vite)
+cd web && npm install && npm run dev        # http://localhost:5173
+npm run build && npm run preview            # production build in web/dist/
 ```
+
+`--reservoir` accepts an ID (`MAR_0001`), a name (`al_massira`), a comma list, `demo`, `priority` or `all`.
+`npm run mock:data` regenerates the illustrative mock dataset. It overwrites the real export in `web/public/data/`.
 
 ---
 
@@ -433,11 +459,11 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 > **Time blocks** assume a 48-hour hackathon. Adjust to your actual schedule.
 
 ### 🟣 Kickoff, all together (H0–H2)
-- [ ] **P0** Create repo, branches per track, project board with one column per track.
+- [x] **P0** Create repo, branches per track, project board with one column per track.
 - [ ] **P0** Everyone creates NASA Earthdata + Google Earth Engine accounts; create a Python virtual environment and `pip install -r requirements.txt`.
-- [ ] **P0** Agree on and commit **Contracts 1–5** to `contracts/`, each with an example file.
-- [ ] **P0** Agree on the **5 demo reservoirs** now so nobody waits for the catalog. Suggested: Al Wahda, Al Massira, Bin El Ouidane, Idriss I, Mansour Eddahbi (north, centre, mountain, arid south).
-- [ ] **P0** Hand-draw rough bounding boxes for those 5 (geojson.io) → `contracts/demo_bboxes.geojson`. Tracks B and C start from this immediately.
+- [x] **P0** Agree on and commit **Contracts 1–5** to `contracts/`, each with an example file.
+- [x] **P0** Agree on the **5 demo reservoirs** now so nobody waits for the catalog. Suggested: Al Wahda, Al Massira, Bin El Ouidane, Idriss I, Mansour Eddahbi (north, centre, mountain, arid south).
+- [x] **P0** Hand-draw rough bounding boxes for those 5 (geojson.io) → `contracts/demo_bboxes.geojson`. Tracks B and C start from this immediately.
 - [ ] **P0** Agree on checkpoint times and a chat channel for "contract change" announcements.
 
 ---
@@ -445,85 +471,85 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 ### 🅰️ Track A: Reservoir catalog & data plumbing
 
 **Block 1 (H2–H8): mocks out fast**
-- [ ] **P0 🧪** Publish `web/public/data/reservoirs.geojson` mock (5 demo polygons from bboxes, fake attributes) **by H3**. This unblocks Track D.
-- [ ] **P0 🧪** Generate mock `timeseries/*.json`, `months.json`, and 2 mock extent PNGs + `index.json` **by H4**.
+- [x] **P0 🧪** Publish `web/public/data/reservoirs.geojson` mock (5 demo polygons from bboxes, fake attributes) **by H3**. This unblocks Track D.
+- [x] **P0 🧪** Generate mock `timeseries/*.json`, `months.json`, and 2 mock extent PNGs + `index.json` **by H4**.
 - [ ] **P0** Download GDW v1.0 reservoirs + HydroLAKES; filter to Morocco.
 - [ ] **P0** Download reference rasters for Morocco: JRC max water extent, MERIT Hydro HAND. **Share them with B and C.**
 
 **Block 2 (H8–H20): real catalog**
-- [ ] **P0** Merge + deduplicate GDW/HydroLAKES; assign stable `reservoir_id`s.
-- [ ] **P1** Add recent dams from OpenStreetMap.
-- [ ] **P0** Attach basin names (HydroBASINS / national basins) and attributes.
-- [ ] **P0** Build `analysis_zones.geojson` (polygon ∪ JRC max extent + 500 m).
-- [ ] **P0** Rank by capacity; mark the top 15–25 as `priority: true`.
-- [ ] **P0 🔁** Replace the mock `reservoirs.geojson` with the real catalog (same schema). Notify D.
-- [ ] **P0** Build the NISAR scene inventory for priority reservoirs (`asf_search`) → share with B.
+- [x] **P0** Merge + deduplicate GDW/HydroLAKES; assign stable `reservoir_id`s. *(done on the merged JRC + OSM + GeoDAR/Wikidata polygons in `geo_data/`; IDs in `data/reference/id_map.csv`)*
+- [x] **P1** Add recent dams from OpenStreetMap.
+- [x] **P0** Attach basin names (HydroBASINS / national basins) and attributes.
+- [x] **P0** Build `analysis_zones.geojson` (polygon ∪ JRC max extent + 500 m).
+- [x] **P0** Rank by capacity; mark the top 15–25 as `priority: true`.
+- [x] **P0 🔁** Replace the mock `reservoirs.geojson` with the real catalog (same schema). Notify D.
+- [x] **P0** Build the NISAR scene inventory for priority reservoirs (`asf_search`) → share with B.
 
 **Block 3 (H20–H32): export pipeline**
-- [ ] **P0** Write `08_export_web.py`: reads `status.csv` + `monthly_area.csv` + extent PNGs and writes Contract 4 files.
-- [ ] **P0 🔁** First real export at **CP2** using whatever B and C have finished.
-- [ ] **P1** Build `basins.geojson` with aggregated status.
+- [x] **P0** Write `08_export_web.py`: reads `status.csv` + `monthly_area.csv` + extent PNGs and writes Contract 4 files.
+- [x] **P0 🔁** First real export at **CP2** using whatever B and C have finished.
+- [x] **P1** Build `basins.geojson` with aggregated status.
 - [ ] **P1** Convert polygons to PMTiles if the GeoJSON is too heavy.
 
 **Block 4 (H32–H42): automation & support**
-- [ ] **P1** One command `make all` (or `run_pipeline.py`) that chains every step.
-- [ ] **P2** GitHub Actions monthly workflow (demo of automation).
+- [x] **P1** One command `make all` (or `run_pipeline.py`) that chains every step.
+- [x] **P2** GitHub Actions monthly workflow (demo of automation).
 - [ ] **P0** Re-export at every new data drop from B and C; final export at **CP4**.
-- [ ] **P1** Help E: data-source table and architecture diagram.
+- [x] **P1** Help E: data-source table and architecture diagram.
 
 ---
 
 ### 🅱️ Track B: NISAR water detection
 
 **Block 1 (H2–H8): one scene, by hand**
-- [ ] **P0** Manually download **one** NISAR GCOV scene over Al Massira from Vertex (don't wait for the inventory).
-- [ ] **P0** Inspect it (`h5ls -r`); document dataset paths, pixel size, CRS, mask layer in `contracts/gcov_notes.md`.
-- [ ] **P0** Read HH/HV into `xarray`, clip to the demo bbox, convert to dB, filter.
-- [ ] **P0** Implement Otsu + masks (Contract 5) on this one scene; save a quick-look PNG.
-- [ ] **P0 🧪** Send Track D one real water-extent PNG + bounds **by H8** (proves the overlay works end to end).
+- [x] **P0** Manually download **one** NISAR GCOV scene over Al Massira from Vertex (don't wait for the inventory).
+- [x] **P0** Inspect it (`h5ls -r`); document dataset paths, pixel size, CRS, mask layer in `contracts/gcov_notes.md`.
+- [x] **P0** Read HH/HV into `xarray`, clip to the demo bbox, convert to dB, filter. *(NumPy windows, `pipeline/utils/nisar.py`)*
+- [x] **P0** Implement Otsu + masks (Contract 5) on this one scene; save a quick-look PNG.
+- [x] **P0 🧪** Send Track D one real water-extent PNG + bounds **by H8** (proves the overlay works end to end).
 
 **Block 2 (H8–H20): robust detection**
-- [ ] **P0** Package as functions in `pipeline/utils/sar.py`: `load_gcov()`, `preprocess()`, `detect_water()`.
+- [x] **P0** Package as functions in `pipeline/utils/sar.py`: `load_gcov()`, `preprocess()`, `detect_water()`.
 - [ ] **P0** Test on the hard cases: Mansour Eddahbi (arid, dry-sand false positives) and Bin El Ouidane (mountain, layover).
-- [ ] **P1** Add HV filter for dry sand / smooth soil.
-- [ ] **P0** Implement the monthly majority-vote composite (`05_monthly_composite.py`).
+- [x] **P1** Add HV filter for dry sand / smooth soil.
+- [x] **P0** Implement the monthly majority-vote composite (`05_monthly_composite.py`).
 - [ ] **P0** Output NISAR rows of `monthly_area.csv` for the 5 demo reservoirs **by CP2**.
 
 **Block 3 (H20–H32): scale up**
-- [ ] **P0 🔁** Switch from demo bboxes to `analysis_zones.geojson` + scene inventory from A.
+- [x] **P0 🔁** Switch from demo bboxes to `analysis_zones.geojson` + scene inventory from A.
 - [ ] **P0** Batch-process all priority reservoirs (subset downloads / S3 streaming to save time).
-- [ ] **P0** Export monthly extent PNGs (transparent, blue water) for every reservoir-month.
-- [ ] **P1** Record `quality` per month (few scenes, high masked fraction → `partial` / `bad`).
+- [x] **P0** Export monthly extent PNGs (transparent, blue water) for every reservoir-month.
+- [x] **P1** Record `quality` per month (few scenes, high masked fraction → `partial` / `bad`).
 
 **Block 4 (H32–H42): QA & figures**
 - [ ] **P0** Visual QA: flip through quick-looks and fix or flag bad months.
 - [ ] **P1** Produce 2–3 "hero" figures for the story (e.g. Al Massira radar image + water mask, before/after).
-- [ ] **P1** Write the method section of `docs/methodology.md`.
+- [x] **P1** Write the method section of `docs/methodology.md`.
 
 ---
 
 ### 🅲 Track C: Sentinel-1 baseline, analytics & validation
 
 **Block 1 (H2–H8): independent detection in GEE**
-- [ ] **P0** Implement Contract 5 in Earth Engine for Sentinel-1 VV, using the demo bboxes.
-- [ ] **P0** Monthly water area 2015 → present for Al Massira; plot it and sanity-check (2025 low → 2026 recovery).
+- [x] **P0** Implement Contract 5 in Earth Engine for Sentinel-1 VV, using the demo bboxes. *(`06_baseline_s1_gee.py`; the run used the Planetary Computer twin `06_baseline_s1_pc.py`)*
+- [x] **P0** Monthly water area 2015 → present for Al Massira; plot it and sanity-check (2025 low → 2026 recovery).
 - [ ] **P0** Start collecting **official fill rates** from *Al Maa Dialna* for the 5 demo dams (monthly values, 2025–2026) → `data/reference/official_fill.csv`.
 
 **Block 2 (H8–H20): baseline + status**
 - [ ] **P0** Run S1 monthly areas for all 5 demo reservoirs → `monthly_area_s1.csv`.
-- [ ] **P0** Compute climatology per reservoir and calendar month (mean, std, p10, p90).
-- [ ] **P0** Write `07_status_anomaly.py`: % of normal, z-score, status class, month-over-month and year-over-year change → `status.csv` (Contract 3).
-- [ ] **P0 🧪** Deliver a first real `status.csv` (S1 only) to A **by CP2**.
+- [x] **P0** Compute climatology per reservoir and calendar month (mean, std, p10, p90).
+- [x] **P0** Write `07_status_anomaly.py`: % of normal, z-score, status class, month-over-month and year-over-year change → `status.csv` (Contract 3).
+- [x] **P0 🧪** Deliver a first real `status.csv` (S1 only) to A **by CP2**.
 
 **Block 3 (H20–H32): merge sensors + validate**
-- [ ] **P0 🔁** Merge NISAR rows from B; harmonize NISAR vs S1 in overlapping months (bias correction).
+- [x] **P0 🔁** Merge NISAR rows from B; harmonize NISAR vs S1 in overlapping months (bias correction).
 - [ ] **P0 🔁** Extend to all priority reservoirs once A's real `analysis_zones.geojson` lands.
 - [ ] **P0** Validation: SAR area vs official fill rate (scatter + R²) for the 5 demo dams.
 - [ ] **P1** Sentinel-2 NDWI comparison on clear-sky dates (IoU).
 - [ ] **P1** Basin-level aggregation; CHIRPS rainfall anomaly per basin.
 
 **Block 4 (H32–H42): numbers for the pitch**
-- [ ] **P0** Write `docs/validation_report.md`: key metrics + 2 charts.
+- [x] **P0** Write `docs/validation_report.md`: key metrics + 2 charts.
 - [ ] **P0** Give E the 3 headline numbers (e.g. R², national change in water area, number of reservoirs in drought).
 - [ ] **P2** Fit area–storage curves; estimate % full for reservoirs without official data.
 
@@ -532,28 +558,28 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 ### 🅳 Track D: Web GIS
 
 **Block 1 (H2–H8): map on mock data**
-- [ ] **P0** Scaffold `web/` (plain JS or Vite), MapLibre map centred on Morocco, basemap switcher.
-- [ ] **P0 🧪** Load mock `reservoirs.geojson`; style polygons by `status` with a legend.
-- [ ] **P0 🧪** Click → side panel with name, basin, capacity, status.
+- [x] **P0** Scaffold `web/` (plain JS or Vite), MapLibre map centred on Morocco, basemap switcher.
+- [x] **P0 🧪** Load mock `reservoirs.geojson`; style polygons by `status` with a legend.
+- [x] **P0 🧪** Click → side panel with name, basin, capacity, status.
 - [ ] **P0** Deploy an early version to GitHub Pages / Netlify (catch deployment issues early).
 
 **Block 2 (H8–H20): core interactions**
-- [ ] **P0 🧪** Time-series chart in the panel (area line, normal band p10–p90, official fill rate on a second axis).
+- [x] **P0 🧪** Time-series chart in the panel (area line, normal band p10–p90, official fill rate on a second axis).
 - [ ] **P0 🧪** Monthly time slider: changes status colors + swaps extent PNG overlays.
-- [ ] **P0 🔁** Test with B's first real PNG (bounds and alignment check).
-- [ ] **P1** Layer control (reservoirs, basins, water extents, basemaps).
+- [x] **P0 🔁** Test with B's first real PNG (bounds and alignment check).
+- [x] **P1** Layer control (reservoirs, basins, water extents, basemaps).
 
 **Block 3 (H20–H32): GIS features**
-- [ ] **P0 🔁** Swap to the first real data export from A at **CP2**; fix any contract mismatches.
-- [ ] **P1** Swipe comparison (two months side by side).
+- [x] **P0 🔁** Swap to the first real data export from A at **CP2**; fix any contract mismatches.
+- [x] **P1** Swipe comparison (two months side by side).
 - [ ] **P1** Search & filter (name, basin, status, size).
-- [ ] **P1** Basin summary view.
-- [ ] **P1** Embed E's "How radar sees water" explainer panel.
+- [x] **P1** Basin summary view.
+- [x] **P1** Embed E's "How radar sees water" explainer panel.
 
 **Block 4 (H32–H42): polish**
-- [ ] **P1** Responsive layout; loading states; "no data" handling.
-- [ ] **P1** Story mode: guided tour (national view → Al Massira recovery → southern drought).
-- [ ] **P2** Language toggle (EN / FR / AR); CSV / GeoJSON download buttons.
+- [x] **P1** Responsive layout; loading states; "no data" handling.
+- [x] **P1** Story mode: guided tour (national view → Al Massira recovery → southern drought).
+- [x] **P2** Language toggle (EN / FR / AR); CSV / GeoJSON download buttons.
 - [ ] **P0** Final deploy with real data at **CP4**; test on phone and laptop.
 
 ---
@@ -562,11 +588,11 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 
 **Block 1 (H2–H8)**
 - [ ] **P0** Draft the storyline and demo script: *"From 4% to 42%: how radar watched Morocco's reservoirs come back, and where drought still holds."*
-- [ ] **P0** Define the visual identity: name, logo text, status color palette (share with D).
+- [x] **P0** Define the visual identity: name, logo text, status color palette (share with D).
 - [ ] **P0** Research context: Morocco's water situation, basins, why reservoirs matter (with sources).
 
 **Block 2 (H8–H20)**
-- [ ] **P0** Write the "How radar sees water" explainer (short text + simple diagrams) → `web/content/`.
+- [x] **P0** Write the "How radar sees water" explainer (short text + simple diagrams) → `web/content/`.
 - [ ] **P0** Write the physical-drivers section: rainfall recovery, evaporation, irrigation demand, dam releases.
 - [ ] **P1** Write future NISAR applications + global roadmap section.
 
@@ -623,6 +649,7 @@ Short meetings (15 min max). Each track answers: *what works, what's blocked, an
 | Wind-roughened water looks bright | Underestimated area | Monthly majority vote, HV, multiple dates |
 | Layover/shadow in mountain valleys | Corrupted shorelines | GCOV mask, prefer best-viewing orbit direction |
 | Flooded vegetation appears bright at L-band | Missed water at margins | Treat as separate class; document |
+| Dry lake bed / smooth soil nearly as dark as water at L-band (found on real NISAR data) | NISAR overestimates area (128.7 vs 72 km² on Al Massira) | Otsu inside the search zone, capped at -18 dB HH / -23 dB HV, bimodality test; harmonization to Sentinel-1 |
 | Small reservoirs (< 0.5 km²) | Unreliable area | Flag as low confidence |
 | Missing / outdated polygons | Reservoirs not monitored | Add OSM; use JRC max extent; manual check for new dams |
 | Surface area ≠ volume | Misleading % full | Present area-based status; calibrate with official data; SWOT later |

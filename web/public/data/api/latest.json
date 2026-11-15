@@ -1,0 +1,62 @@
+{
+ "generated": "2026-11-15T00:57Z",
+ "month": "2026-10",
+ "national": {
+  "month": "2026-10",
+  "area_km2": 251.32,
+  "normal_km2": 189.59,
+  "pct_of_normal": 132.6,
+  "n": 4,
+  "status": "above_normal"
+ },
+ "reservoirs": [
+  {
+   "reservoir_id": "MAR_0001",
+   "name": "Al Massira",
+   "month": "2026-10",
+   "area_km2": 68.572,
+   "normal_km2": 46.971,
+   "pct_of_normal": 146.0,
+   "status": "above_normal",
+   "mom_change_pct": -3.6,
+   "yoy_change_pct": 13.8,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0002",
+   "name": "Al Wahda",
+   "month": "2026-10",
+   "area_km2": 105.222,
+   "normal_km2": 86.338,
+   "pct_of_normal": 121.9,
+   "status": "above_normal",
+   "mom_change_pct": 1.4,
+   "yoy_change_pct": 44.7,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0003",
+   "name": "Idriss I",
+   "month": "2026-10",
+   "area_km2": 45.406,
+   "normal_km2": 39.937,
+   "pct_of_normal": 113.7,
+   "status": "above_normal",
+   "mom_change_pct": 0.3,
+   "yoy_change_pct": 23.4,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0008",
+   "name": "Bin el Ouidane",
+   "month": "2026-10",
+   "area_km2": 32.117,
+   "normal_km2": 16.34,
+   "pct_of_normal": 196.5,
+   "status": "above_normal",
+   "mom_change_pct": -3.7,
+   "yoy_change_pct": 696.6,
+   "official_fill_pct": null
+  }
+ ]
+}

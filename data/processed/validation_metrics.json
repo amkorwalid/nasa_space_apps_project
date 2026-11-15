@@ -1,0 +1,83 @@
+{
+ "generated": "2026-11-14",
+ "official": {
+  "status": "not_run",
+  "reason": "no official fill rates in data/reference/official_fill.csv"
+ },
+ "s2": {
+  "status": "run",
+  "rows": [
+   {
+    "reservoir_id": "MAR_0001",
+    "name": "Al Massira",
+    "s1_date": "2026-10-24",
+    "s2_date": "2026-10-24",
+    "gap_days": 0,
+    "iou": 0.857,
+    "precision": 0.872,
+    "recall": 0.98,
+    "s1_km2": 77.73,
+    "s2_km2": 69.17
+   },
+   {
+    "reservoir_id": "MAR_0001",
+    "name": "Al Massira",
+    "s1_date": "2026-10-12",
+    "s2_date": "2026-10-12",
+    "gap_days": 0,
+    "iou": 0.867,
+    "precision": 0.886,
+    "recall": 0.976,
+    "s1_km2": 76.1,
+    "s2_km2": 69.14
+   }
+  ],
+  "mean_iou": 0.862,
+  "pass": true,
+  "target": 0.8
+ },
+ "sensors": {
+  "status": "run",
+  "rows": [
+   {
+    "reservoir_id": "MAR_0001",
+    "name": "Al Massira",
+    "n": 1,
+    "mean_diff_pct": 10.9,
+    "mean_abs_diff_pct": 10.9
+   }
+  ],
+  "overall_mean_abs_diff_pct": 10.9,
+  "pass": false,
+  "target": 10,
+  "n_pairs": 1
+ },
+ "temporal": {
+  "status": "run",
+  "rows": [
+   {
+    "reservoir_id": "MAR_0001",
+    "name": "Al Massira",
+    "area_2025": 8.47,
+    "area_2026": 61.24,
+    "change_pct": 622.7
+   }
+  ],
+  "months_compared": [
+   "01",
+   "02",
+   "03",
+   "04",
+   "05",
+   "06",
+   "07",
+   "08",
+   "09",
+   "10"
+  ],
+  "n_up": 1,
+  "n": 1,
+  "pass": true,
+  "latest": "2026-10"
+ }
+}

@@ -1,0 +1,317 @@
+reservoir_id,source_id,name
+MAR_0001,RES-001,Al Massira
+MAR_0002,RES-002,Al Wahda
+MAR_0003,RES-003,Idriss I
+MAR_0004,RES-004,Al Mansour Ad Dahbi
+MAR_0005,RES-005,Sidi Mohammed Ben Abdallah
+MAR_0006,RES-006,Mohamed V
+MAR_0007,RES-007,Oued El Makhazine
+MAR_0008,RES-008,Bin el Ouidane
+MAR_0009,RES-009,M'Dez
+MAR_0010,RES-010,RES-057
+MAR_0011,RES-011,Ahmed El Hansali
+MAR_0012,RES-012,Sakia El Hamra
+MAR_0013,RES-013,Kaddoussa
+MAR_0014,RES-014,El Kansera
+MAR_0015,RES-015,9 Avril
+MAR_0016,RES-016,Dar Khrofa
+MAR_0017,RES-017,Al Hassan Addakhil
+MAR_0018,RES-018,Tiddas
+MAR_0019,RES-019,Youssef Ben Tachfine
+MAR_0020,RES-020,Hassan II
+MAR_0021,RES-021,Ouljet Es Soltane
+MAR_0022,RES-022,Unnamed reservoir (RES-022)
+MAR_0023,RES-023,Sidi Chahede
+MAR_0024,RES-024,Agdez (Tizgui)
+MAR_0025,RES-025,Hassan II
+MAR_0026,RES-026,Fask
+MAR_0027,RES-027,Asfalou
+MAR_0028,RES-028,Garde
+MAR_0029,RES-029,Abdelmoumen
+MAR_0030,RES-030,Unnamed reservoir (RES-030)
+MAR_0031,RES-031,Hassan Ier
+MAR_0032,RES-032,Sidi Abbou
+MAR_0033,RES-033,Moulay Abdellah
+MAR_0034,RES-034,Kharroub
+MAR_0035,RES-035,Lalla Takerkhoust
+MAR_0036,RES-036,Moulay Youssef
+MAR_0037,RES-037,Imfout
+MAR_0038,RES-038,Aoulouz
+MAR_0039,RES-039,Smir
+MAR_0040,RES-040,L'Oued al Maleh
+MAR_0041,RES-041,Barrage Zerrar
+MAR_0042,RES-042,Salah
+MAR_0043,RES-043,Allal Al Fassi
+MAR_0044,RES-044,Martil
+MAR_0045,RES-045,Bouhouda
+MAR_0046,RES-046,Abdelkrim Al Khattabi
+MAR_0047,RES-047,Unnamed reservoir (RES-047)
+MAR_0048,RES-048,Tamesna
+MAR_0049,RES-049,Unnamed reservoir (RES-049)
+MAR_0050,RES-050,Yacoub el Mansour
+MAR_0051,RES-051,Talembote
+MAR_0052,RES-052,Moukthar Soussi
+MAR_0053,RES-053,Daourat
+MAR_0054,RES-054,Mechra Homadi
+MAR_0055,RES-055,Bab Louta
+MAR_0056,RES-056,Bassin du barrage Sfissef
+MAR_0057,RES-057,D'Erraouz
+MAR_0058,RES-058,Unnamed reservoir (RES-058)
+MAR_0059,RES-059,Unnamed reservoir (RES-059)
+MAR_0060,RES-060,Tamtattouchte
+MAR_0061,RES-061,Imi El Kheng
+MAR_0062,RES-062,Unnamed reservoir (RES-062)
+MAR_0063,RES-063,Oum Rbia
+MAR_0064,RES-064,Lmarja Nachfa
+MAR_0065,RES-065,Taskourt
+MAR_0066,RES-066,Boussraf
+MAR_0067,RES-067,Raçfet Al Karma
+MAR_0068,RES-068,Unnamed reservoir (RES-068)
+MAR_0069,RES-069,Afnourir
+MAR_0070,RES-070,Oued Rmel
+MAR_0071,RES-071,Unnamed reservoir (RES-071)
+MAR_0072,RES-072,Taghaddoute
+MAR_0073,RES-073,Unnamed reservoir (RES-073)
+MAR_0074,RES-074,Sidi Abderrahmane
+MAR_0075,RES-075,Unnamed reservoir (RES-075)
+MAR_0076,RES-076,Hassan 1s
+MAR_0077,RES-077,Unnamed reservoir (RES-077)
+MAR_0078,RES-078,Unnamed reservoir (RES-078)
+MAR_0079,RES-079,Unnamed reservoir (RES-079)
+MAR_0080,RES-080,Sidi Saïd Maâchou
+MAR_0081,RES-081,El Heiemer
+MAR_0082,RES-082,Jdeid
+MAR_0083,RES-083,Tamadroust
+MAR_0084,RES-084,Agherghiz
+MAR_0085,RES-085,Ben Annou
+MAR_0086,RES-086,Iche
+MAR_0087,RES-087,Unnamed reservoir (RES-087)
+MAR_0088,RES-088,Barage Timkit
+MAR_0089,RES-089,Barage Mazer
+MAR_0090,RES-090,Unnamed reservoir (RES-090)
+MAR_0091,RES-091,Nakhla
+MAR_0092,RES-092,Moulay Bouchta
+MAR_0093,RES-093,Unnamed reservoir (RES-093)
+MAR_0094,RES-094,Unnamed reservoir (RES-094)
+MAR_0095,RES-095,Unnamed reservoir (RES-095)
+MAR_0096,RES-096,Unnamed reservoir (RES-096)
+MAR_0097,RES-097,Rouidat
+MAR_0098,RES-098,Unnamed reservoir (RES-098)
+MAR_0099,RES-099,Ahl Souss
+MAR_0100,RES-100,AL JOMOAA
+MAR_0101,RES-101,Unnamed reservoir (RES-101)
+MAR_0102,RES-102,Tanafnit El Borj
+MAR_0103,RES-103,Unnamed reservoir (RES-103)
+MAR_0104,RES-104,Aït Ouarda
+MAR_0105,RES-105,Unnamed reservoir (RES-105)
+MAR_0106,RES-106,Unnamed reservoir (RES-106)
+MAR_0107,RES-107,Unnamed reservoir (RES-107)
+MAR_0108,RES-108,Unnamed reservoir (RES-108)
+MAR_0109,RES-109,Unnamed reservoir (RES-109)
+MAR_0110,RES-110,Al Gaada
+MAR_0111,RES-111,Unnamed reservoir (RES-111)
+MAR_0112,RES-112,Unnamed reservoir (RES-112)
+MAR_0113,RES-113,Unnamed reservoir (RES-113)
+MAR_0114,RES-114,Unnamed reservoir (RES-114)
+MAR_0115,RES-115,Unnamed reservoir (RES-115)
+MAR_0116,RES-116,Unnamed reservoir (RES-116)
+MAR_0117,RES-117,Unnamed reservoir (RES-117)
+MAR_0118,RES-118,Achbarou
+MAR_0119,RES-119,Unnamed reservoir (RES-119)
+MAR_0120,RES-120,Sidi Abdellah
+MAR_0121,RES-121,Unnamed reservoir (RES-121)
+MAR_0122,RES-122,Unnamed reservoir (RES-122)
+MAR_0123,RES-123,Unnamed reservoir (RES-123)
+MAR_0124,RES-124,Ouiouane
+MAR_0125,RES-125,Unnamed reservoir (RES-125)
+MAR_0126,RES-126,Unnamed reservoir (RES-126)
+MAR_0127,RES-127,Unnamed reservoir (RES-127)
+MAR_0128,RES-128,Iahbil
+MAR_0129,RES-129,Upper Afourer Reservoir
+MAR_0130,RES-130,Unnamed reservoir (RES-130)
+MAR_0131,RES-131,Unnamed reservoir (RES-131)
+MAR_0132,RES-132,Unnamed reservoir (RES-132)
+MAR_0133,RES-133,Unnamed reservoir (RES-133)
+MAR_0134,RES-134,Unnamed reservoir (RES-134)
+MAR_0135,RES-135,Unnamed reservoir (RES-135)
+MAR_0136,RES-136,Douiss
+MAR_0137,RES-137,Unnamed reservoir (RES-137)
+MAR_0138,RES-138,Unnamed reservoir (RES-138)
+MAR_0139,RES-139,Unnamed reservoir (RES-139)
+MAR_0140,RES-140,Unnamed reservoir (RES-140)
+MAR_0141,RES-141,Mehraz
+MAR_0142,RES-142,Unnamed reservoir (RES-142)
+MAR_0143,RES-143,Unnamed reservoir (RES-143)
+MAR_0144,RES-144,Lower Afourer Reservoir
+MAR_0145,RES-145,Unnamed reservoir (RES-145)
+MAR_0146,RES-146,Unnamed reservoir (RES-146)
+MAR_0147,RES-147,Unnamed reservoir (RES-147)
+MAR_0148,RES-148,Dkhila
+MAR_0149,RES-149,Unnamed reservoir (RES-149)
+MAR_0150,RES-150,Unnamed reservoir (RES-150)
+MAR_0151,RES-151,Unnamed reservoir (RES-151)
+MAR_0152,RES-152,Unnamed reservoir (RES-152)
+MAR_0153,RES-153,Unnamed reservoir (RES-153)
+MAR_0154,RES-154,Unnamed reservoir (RES-154)
+MAR_0155,RES-155,Shab Azzarga
+MAR_0156,RES-156,Ben Smim
+MAR_0157,RES-157,Dfilia a Boudnib
+MAR_0158,RES-158,Unnamed reservoir (RES-158)
+MAR_0159,RES-159,Tizguit
+MAR_0160,RES-160,Unnamed reservoir (RES-160)
+MAR_0161,RES-161,Ouled Hmiani
+MAR_0162,RES-162,Oued El Har
+MAR_0163,RES-163,Unnamed reservoir (RES-163)
+MAR_0164,RES-164,Unnamed reservoir (RES-164)
+MAR_0165,RES-165,Itzer
+MAR_0166,RES-166,Unnamed reservoir (RES-166)
+MAR_0167,RES-167,Unnamed reservoir (RES-167)
+MAR_0168,RES-168,Unnamed reservoir (RES-168)
+MAR_0169,RES-169,Sidi Mimoun
+MAR_0170,RES-170,Unnamed reservoir (RES-170)
+MAR_0171,RES-171,Unnamed reservoir (RES-171)
+MAR_0172,RES-172,réserve d'eau
+MAR_0173,RES-173,Unnamed reservoir (RES-173)
+MAR_0174,RES-174,Unnamed reservoir (RES-174)
+MAR_0175,RES-175,Unnamed reservoir (RES-175)
+MAR_0176,RES-176,Bassin de l'Agdal
+MAR_0177,RES-177,Unnamed reservoir (RES-177)
+MAR_0178,RES-178,Unnamed reservoir (RES-178)
+MAR_0179,RES-179,Unnamed reservoir (RES-179)
+MAR_0180,RES-180,Unnamed reservoir (RES-180)
+MAR_0181,RES-181,Unnamed reservoir (RES-181)
+MAR_0182,RES-182,Unnamed reservoir (RES-182)
+MAR_0183,RES-183,Unnamed reservoir (RES-183)
+MAR_0184,RES-184,Amane Sayrrine
+MAR_0185,RES-185,Unnamed reservoir (RES-185)
+MAR_0186,RES-186,barrage
+MAR_0187,RES-187,Unnamed reservoir (RES-187)
+MAR_0188,RES-188,Unnamed reservoir (RES-188)
+MAR_0189,RES-189,Imil Had
+MAR_0190,RES-190,Tagenza
+MAR_0191,RES-191,Unnamed reservoir (RES-191)
+MAR_0192,RES-192,Unnamed reservoir (RES-192)
+MAR_0193,RES-193,Unnamed reservoir (RES-193)
+MAR_0194,RES-194,Unnamed reservoir (RES-194)
+MAR_0195,RES-195,بحيرة اربيب لمغادر
+MAR_0196,RES-196,Unnamed reservoir (RES-196)
+MAR_0197,RES-197,Unnamed reservoir (RES-197)
+MAR_0198,RES-198,Unnamed reservoir (RES-198)
+MAR_0199,RES-199,Tiniourkane Dam
+MAR_0200,RES-200,Ait hamou
+MAR_0201,RES-201,Al manzel
+MAR_0202,RES-202,Unnamed reservoir (RES-202)
+MAR_0203,RES-203,Unnamed reservoir (RES-203)
+MAR_0204,RES-204,Unnamed reservoir (RES-204)
+MAR_0205,RES-205,Réservoir Barrage Collinaire de Oued Lahwah
+MAR_0206,RES-206,Unnamed reservoir (RES-206)
+MAR_0207,RES-207,Unnamed reservoir (RES-207)
+MAR_0208,RES-208,Unnamed reservoir (RES-208)
+MAR_0209,RES-209,Unnamed reservoir (RES-209)
+MAR_0210,RES-210,Unnamed reservoir (RES-210)
+MAR_0211,RES-211,Unnamed reservoir (RES-211)
+MAR_0212,RES-212,Unnamed reservoir (RES-212)
+MAR_0213,RES-213,Imaouen
+MAR_0214,RES-214,سد الزيدانـــيـة
+MAR_0215,RES-215,Unnamed reservoir (RES-215)
+MAR_0216,RES-216,Réserve d'eau
+MAR_0217,RES-217,Unnamed reservoir (RES-217)
+MAR_0218,RES-218,Moulay Ali
+MAR_0219,RES-219,Collinaire de Oued Tamellaste
+MAR_0220,RES-220,Unnamed reservoir (RES-220)
+MAR_0221,RES-221,Collinaire Taddart
+MAR_0222,RES-222,Unnamed reservoir (RES-222)
+MAR_0223,RES-223,Unnamed reservoir (RES-223)
+MAR_0224,RES-224,سد الزيدانـــيـة
+MAR_0225,RES-225,سد الزيدانـــيـة
+MAR_0226,RES-226,Unnamed reservoir (RES-226)
+MAR_0227,RES-227,Unnamed reservoir (RES-227)
+MAR_0228,RES-228,سد الزيدانـــيـة
+MAR_0229,RES-229,سد الزيدانـــيـة
+MAR_0230,RES-230,سد الزيدانـــيـة
+MAR_0231,RES-231,Unnamed reservoir (RES-231)
+MAR_0232,RES-232,Unnamed reservoir (RES-232)
+MAR_0233,LAK-001,Dayet Srij
+MAR_0234,LAK-002,Aguelmame Sidi Ali
+MAR_0235,LAK-003,Isli
+MAR_0236,LAK-004,Merdjat Si Ali Bouchta
+MAR_0237,LAK-005,Ifrah
+MAR_0238,LAK-006,Izoughar
+MAR_0239,LAK-007,Dayet Aaoua
+MAR_0240,LAK-008,Unnamed lake (LAK-008)
+MAR_0241,LAK-009,Guelta Tamda
+MAR_0242,LAK-010,Tislit
+MAR_0243,LAK-011,Dayet Doyates
+MAR_0244,LAK-012,Aguelmame Tifounassine
+MAR_0245,LAK-013,Sidi Boughaba
+MAR_0246,LAK-014,Unnamed lake (LAK-014)
+MAR_0247,LAK-015,Auguelmam Zigza
+MAR_0248,LAK-016,Ifni
+MAR_0249,LAK-017,Unnamed lake (LAK-017)
+MAR_0250,LAK-018,Aglmam Abkhan
+MAR_0251,LAK-019,Saisonnier
+MAR_0252,LAK-020,Tiglmamimes
+MAR_0253,LAK-021,Unnamed lake (LAK-021)
+MAR_0254,LAK-022,Bou daroua
+MAR_0255,LAK-023,Afourgaa
+MAR_0256,LAK-024,Tamda
+MAR_0257,LAK-025,Étang El Oulfa
+MAR_0258,LAK-026,Grichlat
+MAR_0259,LAK-027,Garan
+MAR_0260,LAK-028,Iffer
+MAR_0261,SML-00001,Unnamed pond (SML-00001)
+MAR_0262,SML-00002,Unnamed pond (SML-00002)
+MAR_0263,SML-00003,Unnamed pond (SML-00003)
+MAR_0264,SML-00004,Unnamed pond (SML-00004)
+MAR_0265,SML-00005,Unnamed pond (SML-00005)
+MAR_0266,SML-00006,Unnamed pond (SML-00006)
+MAR_0267,SML-00007,Unnamed pond (SML-00007)
+MAR_0268,SML-00008,Unnamed pond (SML-00008)
+MAR_0269,SML-00009,Unnamed pond (SML-00009)
+MAR_0270,SML-00010,Unnamed pond (SML-00010)
+MAR_0271,SML-00011,Unnamed pond (SML-00011)
+MAR_0272,SML-00012,Unnamed pond (SML-00012)
+MAR_0273,SML-00013,Unnamed pond (SML-00013)
+MAR_0274,SML-00014,Unnamed pond (SML-00014)
+MAR_0275,SML-00015,Unnamed pond (SML-00015)
+MAR_0276,SML-00016,Oued El Hachef
+MAR_0277,SML-00017,Unnamed pond (SML-00017)
+MAR_0278,SML-00018,Unnamed pond (SML-00018)
+MAR_0279,SML-00019,Unnamed pond (SML-00019)
+MAR_0280,SML-00020,Unnamed pond (SML-00020)
+MAR_0281,SML-00021,Unnamed pond (SML-00021)
+MAR_0282,SML-00022,Unnamed pond (SML-00022)
+MAR_0283,SML-00023,OUED EL QANTRA
+MAR_0284,SML-00024,Unnamed pond (SML-00024)
+MAR_0285,SML-00025,Unnamed pond (SML-00025)
+MAR_0286,SML-00026,Unnamed pond (SML-00026)
+MAR_0287,SML-00027,Unnamed pond (SML-00027)
+MAR_0288,SML-00028,Unnamed pond (SML-00028)
+MAR_0289,SML-00029,Unnamed pond (SML-00029)
+MAR_0290,SML-00030,Unnamed pond (SML-00030)
+MAR_0291,SML-00031,Unnamed pond (SML-00031)
+MAR_0292,SML-00032,Unnamed pond (SML-00032)
+MAR_0293,SML-00033,Unnamed pond (SML-00033)
+MAR_0294,SML-00034,Unnamed pond (SML-00034)
+MAR_0295,SML-00035,Unnamed pond (SML-00035)
+MAR_0296,SML-00036,Unnamed pond (SML-00036)
+MAR_0297,SML-00037,Unnamed pond (SML-00037)
+MAR_0298,SML-00038,Unnamed pond (SML-00038)
+MAR_0299,SML-00039,Unnamed pond (SML-00039)
+MAR_0300,SML-00040,Unnamed pond (SML-00040)
+MAR_0301,SML-00041,Unnamed pond (SML-00041)
+MAR_0302,SML-00042,Unnamed pond (SML-00042)
+MAR_0303,SML-00043,Unnamed pond (SML-00043)
+MAR_0304,SML-00044,Unnamed pond (SML-00044)
+MAR_0305,SML-00045,Unnamed pond (SML-00045)
+MAR_0306,SML-00046,Unnamed pond (SML-00046)
+MAR_0307,SML-00047,Unnamed pond (SML-00047)
+MAR_0308,SML-00048,Unnamed pond (SML-00048)
+MAR_0309,SML-00049,Unnamed pond (SML-00049)
+MAR_0310,SML-00050,Unnamed pond (SML-00050)
+MAR_0311,SML-00051,Unnamed pond (SML-00051)
+MAR_0312,SML-00052,Unnamed pond (SML-00052)
+MAR_0313,SML-00053,Unnamed pond (SML-00053)
+MAR_0314,SML-00054,Unnamed pond (SML-00054)
+MAR_0315,SML-00055,Unnamed pond (SML-00055)
+MAR_0316,SML-00056,Unnamed pond (SML-00056)
