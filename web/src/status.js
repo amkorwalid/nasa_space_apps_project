@@ -1,12 +1,18 @@
 // Status classes (README "Key features"): single source of truth for map, legend and panel.
-export const STATUS = {
-  above_normal: { label: 'Above normal', range: '> 110%', color: '#2f6fd6' },
-  normal: { label: 'Normal', range: '90–110%', color: '#2a9d5c' },
-  watch: { label: 'Below normal (watch)', range: '75–90%', color: '#e3b505' },
-  drought: { label: 'Drought', range: '50–75%', color: '#ee7d2b' },
-  severe: { label: 'Severe drought', range: '< 50%', color: '#d23c3c' },
-  no_data: { label: 'No data / low confidence', range: '—', color: '#9aa3ad' },
+import { t } from './i18n.js';
+
+const DEF = {
+  above_normal: { range: '> 110%', color: '#2f6fd6' },
+  normal: { range: '90–110%', color: '#2a9d5c' },
+  watch: { range: '75–90%', color: '#e3b505' },
+  drought: { range: '50–75%', color: '#ee7d2b' },
+  severe: { range: '< 50%', color: '#d23c3c' },
+  no_data: { range: '—', color: '#9aa3ad' },
 };
+
+export const STATUS = Object.fromEntries(
+  Object.entries(DEF).map(([k, v]) => [k, { ...v, get label() { return t(`status.${k}`); } }]),
+);
 
 export const STATUS_ORDER = ['above_normal', 'normal', 'watch', 'drought', 'severe', 'no_data'];
 

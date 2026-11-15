@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 import { statusColor, statusOf } from './status.js';
 import { formatMonth } from './store.js';
+import { t } from './i18n.js';
 
 Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip, Legend);
 
@@ -44,6 +45,7 @@ export function createSeriesChart(canvas, { months, series, month, onPickMonth }
   const val = (k) => rows.map((r) => (r && r[k] != null ? r[k] : null));
   const pointColors = rows.map((r) => statusColor(statusOf(r)));
   const hasOfficial = rows.some((r) => r?.official_fill_pct != null);
+  const hasNisar = rows.some((r) => r?.area_nisar_km2 != null);
 
   const chart = new Chart(canvas, {
     type: 'line',
@@ -51,7 +53,7 @@ export function createSeriesChart(canvas, { months, series, month, onPickMonth }
       labels: months,
       datasets: [
         {
-          label: 'Normal range (p10–p90)',
+          label: t('chartRange'),
           data: val('p90_km2'),
           borderWidth: 0,
           pointRadius: 0,
@@ -61,7 +63,7 @@ export function createSeriesChart(canvas, { months, series, month, onPickMonth }
         },
         { label: 'p10', data: val('p10_km2'), borderWidth: 0, pointRadius: 0, fill: false, order: 5 },
         {
-          label: 'Normal',
+          label: t('chartNormal'),
           data: val('normal_km2'),
           borderColor: '#2a9d5c',
           borderDash: [6, 4],
@@ -70,7 +72,7 @@ export function createSeriesChart(canvas, { months, series, month, onPickMonth }
           order: 3,
         },
         {
-          label: 'Water area (km²)',
+          label: t('chartArea'),
           data: val('area_km2'),
           borderColor: '#1e5fbf',
           backgroundColor: pointColors,
@@ -84,10 +86,24 @@ export function createSeriesChart(canvas, { months, series, month, onPickMonth }
           spanGaps: false,
           order: 1,
         },
+        ...(hasNisar
+          ? [
+              {
+                label: t('chartNisar'),
+                data: val('area_nisar_km2'),
+                borderColor: 'rgba(124,58,237,0.9)',
+                backgroundColor: 'rgba(124,58,237,0.9)',
+                showLine: false,
+                pointStyle: 'triangle',
+                pointRadius: 4,
+                order: 0,
+              },
+            ]
+          : []),
         ...(hasOfficial
           ? [
               {
-                label: 'Official fill (%)',
+                label: t('chartOfficial'),
                 data: val('official_fill_pct'),
                 yAxisID: 'y1',
                 borderColor: '#8a5cc7',
@@ -118,7 +134,7 @@ export function createSeriesChart(canvas, { months, series, month, onPickMonth }
           },
           grid: { display: false },
         },
-        y: { title: { display: true, text: 'Water area (km²)' }, beginAtZero: true, grace: '8%' },
+        y: { title: { display: true, text: t('chartArea') }, beginAtZero: true, grace: '8%' },
         ...(hasOfficial
           ? { y1: { position: 'right', min: 0, max: 100, title: { display: true, text: 'Fill (%)' }, grid: { display: false } } }
           : {}),
@@ -133,9 +149,9 @@ export function createSeriesChart(canvas, { months, series, month, onPickMonth }
           callbacks: {
             title: (items) => formatMonth(months[items[0].dataIndex]),
             label: (item) => {
-              if (item.dataset.label.startsWith('Normal range')) {
+              if (item.datasetIndex === 0) {
                 const r = rows[item.dataIndex];
-                return r ? ` Normal range: ${r.p10_km2}–${r.p90_km2} km²` : '';
+                return r ? ` ${t('chartRange')}: ${r.p10_km2}–${r.p90_km2} km²` : '';
               }
               const unit = item.dataset.yAxisID === 'y1' ? '%' : ' km²';
               return ` ${item.dataset.label.replace(/ \(.*\)/, '')}: ${item.formattedValue}${unit}`;

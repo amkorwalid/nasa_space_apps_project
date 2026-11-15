@@ -1,0 +1,146 @@
+{
+ "generated": "2026-11-15T10:23Z",
+ "month": "2026-10",
+ "national": {
+  "month": "2026-10",
+  "area_km2": 357.57,
+  "normal_km2": 307.37,
+  "pct_of_normal": 116.3,
+  "n": 9,
+  "status": "above_normal"
+ },
+ "reservoirs": [
+  {
+   "reservoir_id": "MAR_0001",
+   "name": "Al Massira",
+   "month": "2026-10",
+   "area_km2": 68.572,
+   "normal_km2": 46.971,
+   "pct_of_normal": 146.0,
+   "status": "above_normal",
+   "mom_change_pct": -3.6,
+   "yoy_change_pct": 13.8,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0002",
+   "name": "Al Wahda",
+   "month": "2026-10",
+   "area_km2": 86.663,
+   "normal_km2": 86.338,
+   "pct_of_normal": 100.4,
+   "status": "normal",
+   "mom_change_pct": -16.5,
+   "yoy_change_pct": 19.2,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0003",
+   "name": "Idriss I",
+   "month": "2026-10",
+   "area_km2": 45.406,
+   "normal_km2": 39.937,
+   "pct_of_normal": 113.7,
+   "status": "above_normal",
+   "mom_change_pct": 0.3,
+   "yoy_change_pct": 23.4,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0004",
+   "name": "Al Mansour Ad Dahbi",
+   "month": "2026-10",
+   "area_km2": 16.753,
+   "normal_km2": 23.117,
+   "pct_of_normal": 72.5,
+   "status": "drought",
+   "mom_change_pct": -18.6,
+   "yoy_change_pct": -22.3,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0005",
+   "name": "Sidi Mohammed Ben Abdallah",
+   "month": "2026-10",
+   "area_km2": 36.786,
+   "normal_km2": 25.853,
+   "pct_of_normal": 142.3,
+   "status": "above_normal",
+   "mom_change_pct": -1.6,
+   "yoy_change_pct": 229.6,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0006",
+   "name": "Mohamed V",
+   "month": "2026-10",
+   "area_km2": 20.662,
+   "normal_km2": 24.399,
+   "pct_of_normal": 84.7,
+   "status": "watch",
+   "mom_change_pct": -0.2,
+   "yoy_change_pct": 7.2,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0007",
+   "name": "Oued El Makhazine",
+   "month": "2026-10",
+   "area_km2": 29.035,
+   "normal_km2": 31.005,
+   "pct_of_normal": 93.6,
+   "status": "normal",
+   "mom_change_pct": -3.0,
+   "yoy_change_pct": -11.5,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0008",
+   "name": "Bin el Ouidane",
+   "month": "2026-10",
+   "area_km2": 32.117,
+   "normal_km2": 16.34,
+   "pct_of_normal": 196.5,
+   "status": "above_normal",
+   "mom_change_pct": -3.7,
+   "yoy_change_pct": 696.6,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0009",
+   "name": "M'Dez",
+   "month": "2026-10",
+   "area_km2": 12.258,
+   "normal_km2": 0.13,
+   "pct_of_normal": 9400.3,
+   "status": "no_data",
+   "mom_change_pct": -9.7,
+   "yoy_change_pct": -14.7,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0011",
+   "name": "Ahmed El Hansali",
+   "month": "2026-10",
+   "area_km2": 21.579,
+   "normal_km2": 13.409,
+   "pct_of_normal": 160.9,
+   "status": "above_normal",
+   "mom_change_pct": 7.8,
+   "yoy_change_pct": 89.4,
+   "official_fill_pct": null
+  },
+  {
+   "reservoir_id": "MAR_0021",
+   "name": "Ouljet Es Soltane",
+   "month": "2026-10",
+   "area_km2": 13.442,
+   "normal_km2": 0.973,
+   "pct_of_normal": 1381.8,
+   "status": "no_data",
+   "mom_change_pct": 0.1,
+   "yoy_change_pct": 219.4,
+   "official_fill_pct": null
+  }
+ ]
+}

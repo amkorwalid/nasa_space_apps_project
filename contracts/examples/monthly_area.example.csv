@@ -1,0 +1,3 @@
+reservoir_id,month,sensor,area_km2,n_obs,quality
+MAR_0001,2026-07,NISAR,48.2,3,good
+MAR_0001,2026-07,S1,46.9,5,good

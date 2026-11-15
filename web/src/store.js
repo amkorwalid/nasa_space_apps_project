@@ -18,8 +18,10 @@ export function createStore(initial) {
 
 export const changed = (state, prev, ...keys) => keys.some((k) => state[k] !== prev[k]);
 
-const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-export const formatMonth = (m) => (m ? `${MONTH_NAMES[Number(m.slice(5)) - 1]} ${m.slice(0, 4)}` : '—');
+import { locale } from './i18n.js';
+
+const MONTH_FMT = new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric', timeZone: 'UTC', numberingSystem: 'latn' });
+export const formatMonth = (m) => (m ? MONTH_FMT.format(Date.UTC(Number(m.slice(0, 4)), Number(m.slice(5)) - 1, 15)) : '—');
 
 export const fmt = (v, digits = 1, unit = '') =>
   v == null || Number.isNaN(v) ? '—' : `${Number(v).toLocaleString('en-US', { maximumFractionDigits: digits, minimumFractionDigits: digits })}${unit}`;

@@ -13,14 +13,16 @@
         <span class="brand-mark" aria-hidden="true">◉</span>
         <div>
           <h1>SaddSAR</h1>
-          <p class="tagline">Radar monitoring of Morocco's reservoirs</p>
+          <p class="tagline" data-i18n="tagline">Radar monitoring of Morocco's reservoirs</p>
         </div>
-        <span id="mock-badge" class="mock-badge" hidden title="This dataset is illustrative mock data">Mock data</span>
+        <span id="mock-badge" class="mock-badge" hidden data-i18n="mock" data-i18n-title="mockTitle">Mock data</span>
       </div>
       <div id="search" class="search"></div>
       <nav class="top-actions">
-        <button id="btn-compare" class="btn" type="button" aria-pressed="false">↔ Compare</button>
-        <button id="btn-explainer" class="btn" type="button">How radar sees water</button>
+        <button id="btn-story" class="btn" type="button" aria-pressed="false" data-i18n="story">▶ Story</button>
+        <button id="btn-compare" class="btn" type="button" aria-pressed="false" data-i18n="compare">↔ Compare</button>
+        <button id="btn-explainer" class="btn" type="button" data-i18n="explainer">How radar sees water</button>
+        <div id="lang" class="lang-switch" role="group"></div>
       </nav>
     </header>
 
@@ -34,7 +36,8 @@
         <div id="layer-control" class="floating layer-control"></div>
         <div id="legend" class="floating legend"></div>
         <div id="timebar" class="floating timebar"></div>
-        <div id="loading" class="overlay-msg">Loading reservoir data…</div>
+        <div id="story-card" class="floating story-card" hidden aria-live="polite"></div>
+        <div id="loading" class="overlay-msg" data-i18n="loading">Loading reservoir data…</div>
       </section>
       <aside id="panel" class="panel" aria-label="Details"></aside>
     </main>

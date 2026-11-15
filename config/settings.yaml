@@ -1,0 +1,101 @@
+# SaddSAR pipeline settings: one place for the AOI, dates, thresholds and paths.
+# Every pipeline step reads this file (pipeline/utils/io.py -> load_settings()).
+# Paths are relative to the repository root.
+
+project: SaddSAR
+country: MAR
+
+paths:
+  raw: data/raw
+  interim: data/interim
+  reference: data/reference
+  processed: data/processed
+  web_data: web/public/data
+  docs: docs
+
+catalog:
+  # Merged, deduplicated polygons (JRC max extent + OSM), built by the water_polygons_extraction track.
+  sources:
+    - geo_data/dams.geojson
+    - geo_data/lakes.geojson
+    - geo_data/ponds.geojson
+  id_map: data/reference/id_map.csv       # source target_id -> stable MAR_#### (never renumbered)
+  zone_buffer_m: 500                      # analysis zone = polygon (JRC max extent) + 500 m
+  low_confidence_km2: 0.5                 # below this, too few radar pixels -> confidence "low"
+  n_priority: 20                          # largest reservoirs by capacity flagged priority: true
+  dedup_overlap: 0.5                      # drop a polygon covered > 50 % by a higher-ranked one
+  demo_reservoirs:                        # README kickoff: north, centre, mountain, arid south
+    - RES-002   # Al Wahda
+    - RES-001   # Al Massira
+    - RES-008   # Bin El Ouidane
+    - RES-003   # Idriss I
+    - RES-004   # Mansour Eddahbi
+  hydrobasins:
+    url: https://data.hydrosheds.org/file/hydrobasins/standard/hybas_af_lev06_v1c.zip
+    shapefile: data/reference/hydrobasins/hybas_af_lev06_v1c.shp
+
+# Contract 5: one written algorithm, implemented for NISAR (local) and Sentinel-1 (PC or GEE).
+detection:
+  land_buffer_m: 1000          # clip = analysis zone + 1 km of land so the histogram is bimodal
+  median_filter_px: 5          # 5x5 median speckle filter
+  opening_px: 3                # 3x3 morphological opening
+  min_blob_px: 10              # drop water blobs smaller than 10 pixels
+  keep_touching_only: true     # keep components that touch the reservoir polygon (methodology 3.3)
+  hand_max_m: 15               # pixels higher than this above the reservoir are never water
+  majority: 0.5                # monthly composite: water if detected in >= 50 % of scenes
+  nisar:
+    # Tuned on real GCOV (Al Massira, Oct 2026): at L-band the exposed, dry lake bed and smooth soil
+    # are almost as dark as water in HH (water peak ~ -19.5 dB, bed -17..-11 dB). Otsu is therefore
+    # computed inside the search zone, and thresholds above -18 dB (HH) / -24 dB (HV) are rejected.
+    fallback_db: -18.0
+    plausible_db: [-30.0, -18.0]
+    otsu_region: search
+    cap_dark_mean_db: -18.5    # cap only if the dark class mean is water-like (measured -18.9 HH / -23.8 HV)
+    use_hv: true               # HV must also be dark (rejects dry sand / smooth soil in the south)
+    hv_offset_db: -5.0         # HV fallback / plausible range = co-pol values + offset (water HV ~ -24 dB noise floor)
+    invalid_mask_values: [0, 255]
+  s1:
+    fallback_db: -18.0
+    plausible_db: [-24.0, -13.0]
+    # Windy lakes (Al Wahda): Otsu ~ -12.7 dB, dark-class mean -16.6..-16.9 -> capped at -13.
+    # Empty lake bed (Al Massira 2024): dark-class mean -11.7 -> fallback, no false water.
+    cap_dark_mean_db: -15.5
+    use_vh: false
+    # VV fallback scenes (whole lake roughened by wind, e.g. Al Wahda Jul-Aug 2026) are re-detected
+    # on VH: Otsu inside the search zone, kept only if the dark class is water-like.
+    # Measured dark means in the search zone: windy full lakes -23.4..-24.1 dB, empty bed -19.3 dB.
+    vh_rescue: true
+    vh_plausible_db: [-30.0, -19.0]
+    vh_cap_dark_mean_db: -22.0
+
+baseline:
+  backend: pc                  # pc = Microsoft Planetary Computer (no login) | gee = Google Earth Engine
+  start: "2015-01"
+  end: auto                    # auto = last complete month
+  scale_m: 40                  # analysis grid for Sentinel-1 (reads the 4x COG overview of the 10 m RTC;
+                               # 0.0016 km2 pixels, fine for the >= 0.5 km2 high-confidence reservoirs)
+  max_scenes_per_month: 3      # evenly spaced scenes from the chosen relative orbit (web months)
+  max_scenes_per_month_archive: 2   # months before web.start_month (climatology only)
+  workers: 16
+  climatology_years: [2015, 2024]   # long-term "normal" period (2025-2026 are judged against it)
+  min_years: 3                 # fewer years for a calendar month -> status no_data
+
+status:
+  # README "Key features" (percent of normal area for that month)
+  above_normal: 110
+  normal: 90
+  watch: 75
+  drought: 50
+
+web:
+  start_month: "2023-01"       # first month in months.json / time slider
+  simplify_deg: 0.0002         # ~20 m polygon simplification for the web
+  coord_decimals: 5
+
+validation:
+  s2_max_cloud: 5              # Sentinel-2 scenes used for NDWI checks (percent cloud)
+  s2_max_days: 3               # max days between Sentinel-2 and Sentinel-1 dates
+  targets:
+    r_official: 0.85
+    iou_s2: 0.80
+    sensor_diff_pct: 10

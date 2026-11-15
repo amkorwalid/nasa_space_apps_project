@@ -9,6 +9,8 @@ import { initTimeSlider } from './timeslider.js';
 import { initCompare } from './compare.js';
 import { initSearch } from './search.js';
 import { initExplainer } from './explainer.js';
+import { initStory } from './story.js';
+import { LANGS, applyDocumentLang, lang, setLang, t } from './i18n.js';
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -30,14 +32,30 @@ function writeHash({ selectedId, month }) {
   history.replaceState(null, '', `#${p}`);
 }
 
+function initChrome() {
+  applyDocumentLang();
+  document.querySelectorAll('[data-i18n]').forEach((el) => (el.innerHTML = t(el.dataset.i18n)));
+  document.querySelectorAll('[data-i18n-title]').forEach((el) => (el.title = t(el.dataset.i18nTitle)));
+  const box = $('#lang');
+  box.setAttribute('aria-label', t('lang'));
+  box.innerHTML = LANGS.map(
+    ([code, label]) => `<button type="button" class="lang-btn${code === lang ? ' active' : ''}" data-lang="${code}" aria-pressed="${code === lang}">${label}</button>`,
+  ).join('');
+  box.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-lang]');
+    if (b && b.dataset.lang !== lang) setLang(b.dataset.lang);
+  });
+}
+
 async function main() {
+  initChrome();
   let data;
   try {
     data = await loadData();
   } catch (err) {
     console.error(err);
     $('#loading').classList.add('error');
-    $('#loading').innerHTML = `Could not load reservoir data.<br><small>${err.message}. Run <code>npm run mock:data</code> or check <code>public/data/</code>.</small>`;
+    $('#loading').innerHTML = `${t('loadError')}<br><small>${err.message}. ${t('loadHint')}</small>`;
     return;
   }
   $('#mock-badge').hidden = !data.isMock;
@@ -69,6 +87,7 @@ async function main() {
   initSearch($('#search'), data, store);
   initExplainer($('#explainer'), $('#btn-explainer'));
   initCompare({ wrap: $('#map-wrap'), mainView, data, store, onViewsChange: (v) => (views = v) });
+  initStory({ card: $('#story-card'), button: $('#btn-story'), data, store, mainView });
 
   store.subscribe((s, prev) => {
     if (changed(s, prev, 'month')) mainView.setMonth(s.month);

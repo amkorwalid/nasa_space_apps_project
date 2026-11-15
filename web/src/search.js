@@ -1,5 +1,6 @@
 import { STATUS, STATUS_ORDER, statusOf } from './status.js';
 import { changed, escapeHtml } from './store.js';
+import { t } from './i18n.js';
 
 /** Search by name + filters (basin, status for the current month, minimum capacity). */
 export function initSearch(el, data, store) {
@@ -8,15 +9,15 @@ export function initSearch(el, data, store) {
 
   el.innerHTML = `
     <div class="search-box">
-      <input type="search" placeholder="Search reservoir or basin…" aria-label="Search reservoirs" autocomplete="off" />
-      <button type="button" class="icon-btn filter-toggle" aria-label="Filters" aria-expanded="false">⚲</button>
+      <input type="search" placeholder="${t('search')}" aria-label="${t('search')}" autocomplete="off" />
+      <button type="button" class="icon-btn filter-toggle" aria-label="${t('filters')}" aria-expanded="false">⚲</button>
       <ul class="search-results" role="listbox" hidden></ul>
     </div>
     <div class="filters" hidden>
-      <label>Basin <select name="basin"><option value="">All</option>${basins.map((b) => `<option>${escapeHtml(b)}</option>`).join('')}</select></label>
-      <label>Status <select name="status"><option value="">All</option>${STATUS_ORDER.map((s) => `<option value="${s}">${STATUS[s].label}</option>`).join('')}</select></label>
-      <label>Min. capacity <select name="cap"><option value="0">Any</option><option value="100">100 Mm³</option><option value="500">500 Mm³</option><option value="1000">1,000 Mm³</option></select></label>
-      <button type="button" class="link" data-action="clear">Clear</button>
+      <label>${t('basin')} <select name="basin"><option value="">${t('all')}</option>${basins.map((b) => `<option>${escapeHtml(b)}</option>`).join('')}</select></label>
+      <label>${t('status')} <select name="status"><option value="">${t('all')}</option>${STATUS_ORDER.map((s) => `<option value="${s}">${STATUS[s].label}</option>`).join('')}</select></label>
+      <label>${t('minCap')} <select name="cap"><option value="0">${t('any')}</option><option value="100">100 Mm³</option><option value="500">500 Mm³</option><option value="1000">1,000 Mm³</option></select></label>
+      <button type="button" class="link" data-action="clear">${t('clear')}</button>
     </div>`;
 
   const input = el.querySelector('input');
@@ -55,7 +56,7 @@ export function initSearch(el, data, store) {
               <span class="swatch" style="background:${STATUS[st].color}"></span>${escapeHtml(p.name)} <small>${escapeHtml(p.basin || '')}</small></button></li>`;
           })
           .join('')
-      : '<li class="empty">No match</li>';
+      : `<li class="empty">${t('noMatch')}</li>`;
   }
 
   input.addEventListener('input', () => {

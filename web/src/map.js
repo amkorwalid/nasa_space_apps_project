@@ -5,6 +5,7 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import { statusColorExpression, statusOf, STATUS } from './status.js';
 import { centroid, bbox } from './data.js';
 import { escapeHtml, fmt, formatMonth } from './store.js';
+import { t } from './i18n.js';
 
 if (typeof maplibregl.setWorkerUrl === 'function') maplibregl.setWorkerUrl(workerUrl);
 
@@ -133,8 +134,10 @@ export class MapView {
 
     // One image source per reservoir: monthly water-extent PNG overlay
     this.extentLayers = [];
+    const withExtents = new Set(Object.keys(data.extents || {}).map((k) => k.slice(0, k.lastIndexOf('_'))));
     for (const f of data.reservoirs.features) {
       const id = f.properties.reservoir_id;
+      if (!withExtents.has(id)) continue;
       const corners = boundsToCorners(bbox(f.geometry));
       map.addSource(`extent-${id}`, { type: 'image', url: TRANSPARENT_PNG, coordinates: corners });
       map.addLayer({
@@ -162,7 +165,11 @@ export class MapView {
       type: 'FeatureCollection',
       features: data.reservoirs.features.map((f) => ({
         type: 'Feature',
-        properties: { reservoir_id: f.properties.reservoir_id, capacity_mcm: f.properties.capacity_mcm ?? 0 },
+        properties: {
+          reservoir_id: f.properties.reservoir_id,
+          capacity_mcm: f.properties.capacity_mcm ?? 0,
+          monitored: data.isMonitored ? data.isMonitored(f) : true,
+        },
         geometry: { type: 'Point', coordinates: centroid(f.geometry) },
       })),
     };
@@ -174,7 +181,8 @@ export class MapView {
       maxzoom: 9,
       paint: {
         'circle-color': statusColorExpression,
-        'circle-radius': ['interpolate', ['linear'], ['sqrt', ['get', 'capacity_mcm']], 0, 5, 60, 14],
+        'circle-radius': ['case', ['get', 'monitored'],
+          ['interpolate', ['linear'], ['sqrt', ['get', 'capacity_mcm']], 0, 5, 60, 14], 3],
         'circle-stroke-color': ['case', ['boolean', ['feature-state', 'selected'], false], '#111827', '#ffffff'],
         'circle-stroke-width': ['case', ['boolean', ['feature-state', 'selected'], false], 3, 2],
         'circle-opacity': ['case', ['boolean', ['feature-state', 'dimmed'], false], 0.25, 0.95],
@@ -213,7 +221,7 @@ export class MapView {
         .setHTML(
           `<strong>${escapeHtml(f.properties.name)}</strong><br>` +
             `<span class="dot" style="background:${STATUS[st].color}"></span>${STATUS[st].label}` +
-            (rec ? ` · ${fmt(rec.pct_of_normal, 0, '%')} of normal` : '') +
+            (rec ? ` · ${fmt(rec.pct_of_normal, 0, '%')} ${t('pctNormal').replace(/^% ?/, '')}` : '') +
             `<br><small>${formatMonth(this.month)}</small>`,
         )
         .addTo(map);
