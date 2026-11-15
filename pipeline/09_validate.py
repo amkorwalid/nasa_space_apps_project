@@ -211,7 +211,7 @@ def headlines(cfg, st: pd.DataFrame, names: dict) -> dict:
     if nat:
         low = min(nat, key=lambda r: r["pct_of_normal"])
         now = nat[-1]
-        out.update({"national_pct_now": now["pct_of_normal"], "national_area_now_km2": now["area_km2"],
+        out.update({"national_n": now["n"], "national_pct_now": now["pct_of_normal"], "national_area_now_km2": now["area_km2"],
                     "lowest_month": low["month"], "national_pct_lowest": low["pct_of_normal"],
                     "national_area_lowest_km2": low["area_km2"],
                     "change_since_lowest_pct": round((now["area_km2"] / low["area_km2"] - 1) * 100, 1)
@@ -237,6 +237,7 @@ def main():
     ap.add_argument("--reservoir", default="demo", help="reservoirs used for the Sentinel-2 test")
     ap.add_argument("--s2-pairs", type=int, default=3)
     ap.add_argument("--no-s2", action="store_true")
+    ap.add_argument("--reuse-s2", action="store_true", help="keep the Sentinel-2 results of the previous run")
     ap.add_argument("--settings", default=None)
     a = ap.parse_args()
     cfg = load_settings(a.settings)
@@ -250,8 +251,13 @@ def main():
     step("1/4 official fill rates")
     t1 = official_test(cfg, st, names)
     step("2/4 Sentinel-2 NDWI comparison")
-    t2 = {"status": "not_run", "reason": "--no-s2"} if a.no_s2 else \
-        s2_test(cfg, resolve_reservoirs(cfg, a.reservoir), zones, a.s2_pairs)
+    prev = read_json(path(cfg, "processed", "validation_metrics.json"), default={})
+    if a.reuse_s2 and prev.get("s2", {}).get("status") == "run":
+        t2 = prev["s2"]
+    elif a.no_s2:
+        t2 = {"status": "not_run", "reason": "--no-s2"}
+    else:
+        t2 = s2_test(cfg, resolve_reservoirs(cfg, a.reservoir), zones, a.s2_pairs)
     step("3/4 NISAR vs Sentinel-1")
     t3 = sensor_test(cfg, names)
     step("4/4 temporal sanity")
@@ -278,7 +284,7 @@ Latest month in the data: **{t4.get('latest')}**. Re-run the step after each dat
 
 ## Headline numbers (for the pitch)
 
-{f"- National water area of the {head['n_reservoirs']} monitored reservoirs in {head['month']}: **{head.get('national_area_now_km2')} km², {head.get('national_pct_now')} % of the 2015-2024 normal**." if head.get('national_pct_now') is not None else ''}
+{f"- National water area of the {head.get('national_n')} monitored reservoirs with a 2015-2024 normal (of {head['n_reservoirs']}) in {head['month']}: **{head.get('national_area_now_km2')} km², {head.get('national_pct_now')} % of the 2015-2024 normal**." if head.get('national_pct_now') is not None else ''}
 {f"- Lowest month since {cfg['web']['start_month']}: {head['lowest_month']} at {head['national_area_lowest_km2']} km² ({head['national_pct_lowest']} % of normal); water area has changed by **{head['change_since_lowest_pct']:+} %** since." if head.get('lowest_month') else ''}
 - Status in {head['month']}: {', '.join(f"{v} {k.replace('_', ' ')}" for k, v in head['status_counts'].items())}.
 {f"- Radar water maps agree with cloud-free Sentinel-2 at a mean IoU of **{t2['mean_iou']}** ({len(t2['rows'])} comparisons)." if t2.get('status') == 'run' else ''}

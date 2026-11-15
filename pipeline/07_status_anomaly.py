@@ -56,6 +56,9 @@ def main():
     files = [path(cfg, "processed", "monthly_area_s1.csv"), path(cfg, "processed", "monthly_area_nisar.csv")]
     monthly = analytics.read_monthly(files)
     monthly = monthly[monthly["month"] <= base["end"]]  # complete months only
+    before = (monthly["quality"] == "bad").sum()
+    monthly = analytics.flag_implausible_drops(monthly)
+    step(f"Temporal QA: {(monthly['quality'] == 'bad').sum() - before} implausible one-month drops flagged bad")
     if monthly.empty:
         raise SystemExit("No monthly areas yet: run step 06 (Sentinel-1) and/or steps 02-05 (NISAR).")
     merged_cols = ["reservoir_id", "month", "sensor", "area_km2", "n_obs", "quality"]
@@ -74,6 +77,14 @@ def main():
     clim.round(3).to_csv(path(cfg, "processed", "climatology.csv"), index=False)
 
     low = {f["properties"]["reservoir_id"] for f in catalog["features"] if f["properties"]["confidence"] == "low"}
+    # New reservoirs (filled during or after the baseline years, e.g. M'Dez 2025) have a near-zero
+    # "normal", so % of normal is meaningless: status no_data, area still reported.
+    area_max = {f["properties"]["reservoir_id"]: f["properties"]["polygon_area_km2"] for f in catalog["features"]}
+    base_mean = clim.groupby("reservoir_id")["normal_km2"].mean()
+    new_res = {rid for rid, v in base_mean.items() if area_max.get(rid) and v < 0.10 * area_max[rid]}
+    if new_res:
+        step("No representative 2015-2024 baseline (new reservoir), status no_data: " + ", ".join(sorted(new_res)))
+    low |= new_res
     official = load_official(cfg, catalog)
     status = analytics.build_status(monthly, clim, cfg["status"], int(base["min_years"]), low, official)
 

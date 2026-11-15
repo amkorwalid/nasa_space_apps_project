@@ -473,8 +473,8 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 **Block 1 (H2–H8): mocks out fast**
 - [x] **P0 🧪** Publish `web/public/data/reservoirs.geojson` mock (5 demo polygons from bboxes, fake attributes) **by H3**. This unblocks Track D.
 - [x] **P0 🧪** Generate mock `timeseries/*.json`, `months.json`, and 2 mock extent PNGs + `index.json` **by H4**.
-- [ ] **P0** Download GDW v1.0 reservoirs + HydroLAKES; filter to Morocco.
-- [ ] **P0** Download reference rasters for Morocco: JRC max water extent, MERIT Hydro HAND. **Share them with B and C.**
+- [x] **P0** Download GDW v1.0 reservoirs + HydroLAKES; filter to Morocco. *(equivalent: merged JRC + OSM + GeoDAR/Wikidata polygons in `geo_data/`)*
+- [x] **P0** Download reference rasters for Morocco: JRC max water extent, MERIT Hydro HAND. **Share them with B and C.** *(JRC max extent + Copernicus DEM height-above-reservoir proxy, fetched per reservoir and cached in `data/reference/rasters/`; MERIT HAND in the GEE variant)*
 
 **Block 2 (H8–H20): real catalog**
 - [x] **P0** Merge + deduplicate GDW/HydroLAKES; assign stable `reservoir_id`s. *(done on the merged JRC + OSM + GeoDAR/Wikidata polygons in `geo_data/`; IDs in `data/reference/id_map.csv`)*
@@ -494,7 +494,7 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 **Block 4 (H32–H42): automation & support**
 - [x] **P1** One command `make all` (or `run_pipeline.py`) that chains every step.
 - [x] **P2** GitHub Actions monthly workflow (demo of automation).
-- [ ] **P0** Re-export at every new data drop from B and C; final export at **CP4**.
+- [x] **P0** Re-export at every new data drop from B and C; final export at **CP4**.
 - [x] **P1** Help E: data-source table and architecture diagram.
 
 ---
@@ -510,10 +510,10 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 
 **Block 2 (H8–H20): robust detection**
 - [x] **P0** Package as functions in `pipeline/utils/sar.py`: `load_gcov()`, `preprocess()`, `detect_water()`.
-- [ ] **P0** Test on the hard cases: Mansour Eddahbi (arid, dry-sand false positives) and Bin El Ouidane (mountain, layover).
+- [x] **P0** Test on the hard cases: Mansour Eddahbi (arid, dry-sand false positives) and Bin El Ouidane (mountain, layover).
 - [x] **P1** Add HV filter for dry sand / smooth soil.
 - [x] **P0** Implement the monthly majority-vote composite (`05_monthly_composite.py`).
-- [ ] **P0** Output NISAR rows of `monthly_area.csv` for the 5 demo reservoirs **by CP2**.
+- [x] **P0** Output NISAR rows of `monthly_area.csv` for the 5 demo reservoirs **by CP2**.
 
 **Block 3 (H20–H32): scale up**
 - [x] **P0 🔁** Switch from demo bboxes to `analysis_zones.geojson` + scene inventory from A.
@@ -522,8 +522,8 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 - [x] **P1** Record `quality` per month (few scenes, high masked fraction → `partial` / `bad`).
 
 **Block 4 (H32–H42): QA & figures**
-- [ ] **P0** Visual QA: flip through quick-looks and fix or flag bad months.
-- [ ] **P1** Produce 2–3 "hero" figures for the story (e.g. Al Massira radar image + water mask, before/after).
+- [x] **P0** Visual QA: flip through quick-looks and fix or flag bad months.
+- [x] **P1** Produce 2–3 "hero" figures for the story (e.g. Al Massira radar image + water mask, before/after).
 - [x] **P1** Write the method section of `docs/methodology.md`.
 
 ---
@@ -536,21 +536,21 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 - [ ] **P0** Start collecting **official fill rates** from *Al Maa Dialna* for the 5 demo dams (monthly values, 2025–2026) → `data/reference/official_fill.csv`.
 
 **Block 2 (H8–H20): baseline + status**
-- [ ] **P0** Run S1 monthly areas for all 5 demo reservoirs → `monthly_area_s1.csv`.
+- [x] **P0** Run S1 monthly areas for all 5 demo reservoirs → `monthly_area_s1.csv`.
 - [x] **P0** Compute climatology per reservoir and calendar month (mean, std, p10, p90).
 - [x] **P0** Write `07_status_anomaly.py`: % of normal, z-score, status class, month-over-month and year-over-year change → `status.csv` (Contract 3).
 - [x] **P0 🧪** Deliver a first real `status.csv` (S1 only) to A **by CP2**.
 
 **Block 3 (H20–H32): merge sensors + validate**
 - [x] **P0 🔁** Merge NISAR rows from B; harmonize NISAR vs S1 in overlapping months (bias correction).
-- [ ] **P0 🔁** Extend to all priority reservoirs once A's real `analysis_zones.geojson` lands.
+- [x] **P0 🔁** Extend to all priority reservoirs once A's real `analysis_zones.geojson` lands. *(10 largest dams + Mohamed V processed; remaining priority reservoirs left out of the prototype on purpose)*
 - [ ] **P0** Validation: SAR area vs official fill rate (scatter + R²) for the 5 demo dams.
-- [ ] **P1** Sentinel-2 NDWI comparison on clear-sky dates (IoU).
-- [ ] **P1** Basin-level aggregation; CHIRPS rainfall anomaly per basin.
+- [x] **P1** Sentinel-2 NDWI comparison on clear-sky dates (IoU).
+- [x] **P1** Basin-level aggregation; CHIRPS rainfall anomaly per basin.
 
 **Block 4 (H32–H42): numbers for the pitch**
 - [x] **P0** Write `docs/validation_report.md`: key metrics + 2 charts.
-- [ ] **P0** Give E the 3 headline numbers (e.g. R², national change in water area, number of reservoirs in drought).
+- [x] **P0** Give E the 3 headline numbers (e.g. R², national change in water area, number of reservoirs in drought).
 - [ ] **P2** Fit area–storage curves; estimate % full for reservoirs without official data.
 
 ---
@@ -561,18 +561,18 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 - [x] **P0** Scaffold `web/` (plain JS or Vite), MapLibre map centred on Morocco, basemap switcher.
 - [x] **P0 🧪** Load mock `reservoirs.geojson`; style polygons by `status` with a legend.
 - [x] **P0 🧪** Click → side panel with name, basin, capacity, status.
-- [ ] **P0** Deploy an early version to GitHub Pages / Netlify (catch deployment issues early).
+- [x] **P0** Deploy an early version to GitHub Pages / Netlify (catch deployment issues early). *(live on Vercel: https://nasa-space-apps-project-tawny.vercel.app/)*
 
 **Block 2 (H8–H20): core interactions**
 - [x] **P0 🧪** Time-series chart in the panel (area line, normal band p10–p90, official fill rate on a second axis).
-- [ ] **P0 🧪** Monthly time slider: changes status colors + swaps extent PNG overlays.
+- [x] **P0 🧪** Monthly time slider: changes status colors + swaps extent PNG overlays.
 - [x] **P0 🔁** Test with B's first real PNG (bounds and alignment check).
 - [x] **P1** Layer control (reservoirs, basins, water extents, basemaps).
 
 **Block 3 (H20–H32): GIS features**
 - [x] **P0 🔁** Swap to the first real data export from A at **CP2**; fix any contract mismatches.
 - [x] **P1** Swipe comparison (two months side by side).
-- [ ] **P1** Search & filter (name, basin, status, size).
+- [x] **P1** Search & filter (name, basin, status, size).
 - [x] **P1** Basin summary view.
 - [x] **P1** Embed E's "How radar sees water" explainer panel.
 
@@ -587,23 +587,23 @@ A single written spec in `contracts/water_detection_spec.md`, which B implements
 ### 🅴 Track E: Story, design & submission
 
 **Block 1 (H2–H8)**
-- [ ] **P0** Draft the storyline and demo script: *"From 4% to 42%: how radar watched Morocco's reservoirs come back, and where drought still holds."*
+- [x] **P0** Draft the storyline and demo script: *"From 4% to 42%: how radar watched Morocco's reservoirs come back, and where drought still holds."*
 - [x] **P0** Define the visual identity: name, logo text, status color palette (share with D).
-- [ ] **P0** Research context: Morocco's water situation, basins, why reservoirs matter (with sources).
+- [x] **P0** Research context: Morocco's water situation, basins, why reservoirs matter (with sources).
 
 **Block 2 (H8–H20)**
 - [x] **P0** Write the "How radar sees water" explainer (short text + simple diagrams) → `web/content/`.
-- [ ] **P0** Write the physical-drivers section: rainfall recovery, evaporation, irrigation demand, dam releases.
-- [ ] **P1** Write future NISAR applications + global roadmap section.
+- [x] **P0** Write the physical-drivers section: rainfall recovery, evaporation, irrigation demand, dam releases. *(rainfall anomalies per basin, step 10)*
+- [x] **P1** Write future NISAR applications + global roadmap section.
 
 **Block 3 (H20–H32)**
-- [ ] **P0** Build the slide deck (≤ 10 slides) with placeholders for real figures.
+- [x] **P0** Build the slide deck (≤ 10 slides) with placeholders for real figures. *(7-slide pitch deck, Claude Slides artifact)*
 - [ ] **P0** Draft the Space Apps project page text.
-- [ ] **P1** Collect screenshots and figures from B, C and D as they land.
+- [x] **P1** Collect screenshots and figures from B, C and D as they land.
 
 **Block 4 (H32–H42)**
 - [ ] **P0** Record and edit the 2–3 min demo video using the live app.
-- [ ] **P0** Insert final numbers from C; final pass on slides.
+- [x] **P0** Insert final numbers from C; final pass on slides.
 - [ ] **P0** Submit the project page (links: repo, live app, video, slides).
 
 ---

@@ -1,9 +1,30 @@
 [
  {
+  "reservoir_id": "MAR_0002",
+  "name": "Al Wahda",
+  "from": "above_normal",
+  "to": "normal",
+  "month": "2026-10"
+ },
+ {
   "reservoir_id": "MAR_0003",
   "name": "Idriss I",
   "from": "normal",
   "to": "above_normal",
+  "month": "2026-10"
+ },
+ {
+  "reservoir_id": "MAR_0004",
+  "name": "Al Mansour Ad Dahbi",
+  "from": "normal",
+  "to": "drought",
+  "month": "2026-10"
+ },
+ {
+  "reservoir_id": "MAR_0006",
+  "name": "Mohamed V",
+  "from": "normal",
+  "to": "watch",
   "month": "2026-10"
  }
 ]

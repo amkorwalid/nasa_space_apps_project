@@ -84,3 +84,13 @@ def test_month_helpers():
     assert month_range("2025-11", "2026-02") == ["2025-11", "2025-12", "2026-01", "2026-02"]
     assert shift_month("2026-01", -1) == "2025-12"
     assert shift_month("2025-12", 13) == "2027-01"
+
+
+def test_flag_implausible_drops_marks_isolated_collapse_only():
+    rows = [("2026-0%d" % m, a) for m, a in [(1, 100), (2, 0.4), (3, 101), (4, 98), (5, 1.0), (6, 0.8), (7, 0.9)]]
+    df = pd.DataFrame([{"reservoir_id": "R", "month": m, "sensor": "S1", "area_km2": a, "n_obs": 3, "quality": "good"}
+                       for m, a in rows])
+    out = analytics.flag_implausible_drops(df).set_index("month")["quality"]
+    assert out["2026-02"] == "bad"            # 100 -> 0.4 -> 101: wind, not drought
+    assert out["2026-05"] == "good"           # 98 -> 1.0 -> 0.8: sustained low (next month also low)
+    assert (out.drop("2026-02") == "good").all()

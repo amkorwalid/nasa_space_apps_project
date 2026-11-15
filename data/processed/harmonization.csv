@@ -1,2 +1,4 @@
 reservoir_id,n_overlap,factor,method,mean_abs_diff_pct
 MAR_0001,3,0.8581,reservoir,16.86
+MAR_0002,1,0.8611,pooled,4.36
+MAR_0004,1,0.8611,pooled,18.54

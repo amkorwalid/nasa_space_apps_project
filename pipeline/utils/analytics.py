@@ -41,6 +41,20 @@ def read_monthly(files) -> pd.DataFrame:
     return df.drop_duplicates(["reservoir_id", "month", "sensor"], keep="last")
 
 
+def flag_implausible_drops(df: pd.DataFrame, ratio: float = 0.25, min_neighbour_km2: float = 2.0) -> pd.DataFrame:
+    """Temporal QA: a reservoir cannot lose >75 % of its water and refill within one month. A month
+    whose area is below `ratio` x the smaller of its two neighbouring months (both >= min_neighbour_km2)
+    is a detection failure (typically every scene wind-roughened) and is marked quality "bad"."""
+    df = df.copy()
+    for (rid, sensor), g in df.groupby(["reservoir_id", "sensor"]):
+        g = g.sort_values("month")
+        prev, nxt = g["area_km2"].shift(1), g["area_km2"].shift(-1)
+        ref = pd.concat([prev, nxt], axis=1).min(axis=1)
+        bad = (ref >= min_neighbour_km2) & (g["area_km2"] < ratio * ref)
+        df.loc[g.index[bad], "quality"] = "bad"
+    return df
+
+
 def harmonize(df: pd.DataFrame, min_overlap: int = 2) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Scale NISAR areas onto the Sentinel-1 baseline: k = median(S1 / NISAR) over months where
     both are usable (per reservoir; pooled over all reservoirs when a reservoir has < min_overlap).
